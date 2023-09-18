@@ -633,6 +633,22 @@ namespace LMS_DAL
             }
             return response;
         }
+        public ResponseStatusModel AddToFav(LeadDetails ld)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            string sql = "[SP_AddToFav]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    Lead_Id = ld.LeadId,
+                    UpdatedBy = ld.UpdatedBy,
+                    IsFav = ld.IsFav
+                }, commandType: CommandType.StoredProcedure);
+                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return response;
+        }
         public ResponseStatusModel RemoveCompany(int Company_Id)
         {
             ResponseStatusModel response = new ResponseStatusModel();

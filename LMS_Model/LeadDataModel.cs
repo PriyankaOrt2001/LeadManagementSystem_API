@@ -65,6 +65,7 @@ namespace LMS_Model
         public string remarkCount { get; set; }
         public string BackFileStatus { get; set; }
         public string FrontFileStatus { get; set; }
+        public int IsFav { get; set; }
 
     }
     public class CardImages

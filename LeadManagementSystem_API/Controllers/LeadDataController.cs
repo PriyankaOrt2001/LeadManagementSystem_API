@@ -969,6 +969,37 @@ namespace LeadManagementSystem_API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        [HttpPost]
+        [Route("api/v1/AddToFav")]
+        public HttpResponseMessage AddToFav(LeadDetails ld)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            try
+            {
+                response = service.AddToFav(ld);
+                if (ld.LeadId == null)
+                {
+                    response.LeadId = "";
+                }
+                else
+                {
+                    response.LeadId = ld.LeadId;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "UpdateLeadStatus" },
+                    { "Controller", "LeadDataController" }
+                };
+                response.LeadId = "";
+                response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
         [HttpGet]
         [Route("api/v1/RemoveEmployee")]
         public HttpResponseMessage RemoveEmployee(int id)

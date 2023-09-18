@@ -200,5 +200,9 @@ namespace LMS_BAL
         {
             return repository.UpdatePlan(pd);
         }
+        public ResponseStatusModel AddToFav(LeadDetails ld)
+        {
+            return repository.AddToFav(ld);
+        }
     }
 }
