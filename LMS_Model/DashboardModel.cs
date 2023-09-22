@@ -32,7 +32,31 @@ namespace LMS_Model
         {
             get; set;
         }
-    public List<LeadDetailsForChart> LeadList
+        public string PriceOfTotalLeads
+        {
+            get; set;
+        }
+        public string PriceOfOpenLeads
+        {
+            get; set;
+        }
+        public string PriceOfClosedLeads
+        {
+            get; set;
+        }
+        public string PriceOfHoldLeads
+        {
+            get; set;
+        }
+        public string PriceOfConvertedLeads
+        {
+            get; set;
+        }
+        public string PriceOfGhostLeads
+        {
+            get; set;
+        }
+        public List<LeadDetailsForChart> LeadList
         {
             get; set;
         }
