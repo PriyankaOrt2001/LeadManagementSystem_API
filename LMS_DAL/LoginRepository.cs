@@ -22,6 +22,7 @@ namespace LMS_DAL
                 {
                     UserName = login.UserName,
                     Password = login.Password
+                   // ,DeviceId = login.DeviceId
                 }, commandType: CommandType.StoredProcedure);
                 response.usermodel = multi.Read<UserModel>().SingleOrDefault();
                 response.response = multi.Read<ResponseStatusModel>().SingleOrDefault();

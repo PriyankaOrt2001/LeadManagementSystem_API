@@ -9,8 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 
 namespace LeadManagementSystem_API.Controllers
 {
@@ -19,6 +21,141 @@ namespace LeadManagementSystem_API.Controllers
     {
         readonly LeadDataService service = new LeadDataService();
         ResponseMessageModel rm = new ResponseMessageModel();
+
+
+        [HttpGet]
+        [Route("api/v1/notificationsend")]
+        public HttpResponseMessage notificationsend(Notification notification)
+        {
+            string SERVER_KEY_TOKEN = "BHRp5rPa85ZpngKNOxdnfKMdt_1Sp0hF1SM-33_aGo-4NXSFsZdwerDHrwkzsJlj3AsnwZZi67Oqrpduo5uLAwM";
+            var SENDER_ID = "499601684467";
+            var deviceId = "b6cd33d4fabd0703";
+            WebRequest tRequest;
+            tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+            tRequest.Method = "post";
+            tRequest.ContentType = " application/json";
+
+            tRequest.Headers.Add(string.Format("Authorization: key={0}", SERVER_KEY_TOKEN));
+            tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
+
+            var a = new
+            {
+                notification = new
+                {
+                    notification.title,
+                    notification.text,
+                    icon = "https://domain/path/to/logo.png",
+                    sound = "mySound"
+                },
+                to = deviceId
+            };
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(a));
+            tRequest.ContentLength = byteArray.Length;
+
+            Stream dataStream = tRequest.GetRequestStream();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
+
+            WebResponse tResponse = tRequest.GetResponse();
+            dataStream = tResponse.GetResponseStream();
+
+            StreamReader tReader = new StreamReader(dataStream);
+            string sResponseFromServer = tReader.ReadToEnd();
+
+            tReader.Close();
+            dataStream.Close();
+            tResponse.Close();
+
+            //return sResponseFromServer;
+            return Request.CreateResponse(HttpStatusCode.OK, notification);
+        }
+
+        [HttpGet]
+        [Route("api/v1/pushnotification")]
+        public HttpResponseMessage sendnotification(Notification obj)
+        {
+            try
+            {
+                var applicationID = "BHRp5rPa85ZpngKNOxdnfKMdt_1Sp0hF1SM-33_aGo-4NXSFsZdwerDHrwkzsJlj3AsnwZZi67Oqrpduo5uLAwM";
+
+                var senderId = "499601684467";
+
+                string deviceId = "euxqdp------ioIdL87abVL";
+
+                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+
+                tRequest.Method = "post";
+
+                tRequest.ContentType = "application/json";
+
+                var data = new
+
+                {
+
+                    to = deviceId,
+
+                    notification = new
+
+                    {
+
+                        body = obj.text,
+
+                        title = obj.title,
+
+                        icon = "myicon"
+
+                    }
+                };
+
+                var serializer = new JavaScriptSerializer();
+
+                var json = serializer.Serialize(data);
+
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
+
+                tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
+
+                tRequest.ContentLength = byteArray.Length;
+
+
+                using (Stream dataStream = tRequest.GetRequestStream())
+                {
+
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+
+
+                    using (WebResponse tResponse = tRequest.GetResponse())
+                    {
+
+                        using (Stream dataStreamResponse = tResponse.GetResponseStream())
+                        {
+
+                            using (StreamReader tReader = new StreamReader(dataStreamResponse))
+                            {
+
+                                String sResponseFromServer = tReader.ReadToEnd();
+
+                                string str = sResponseFromServer;
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+
+                string str = ex.Message;
+
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, obj);
+        }
+
+
         [HttpGet]
         [Route("api/v1/GetCompanyList")]
         public HttpResponseMessage GetCompanyList()
