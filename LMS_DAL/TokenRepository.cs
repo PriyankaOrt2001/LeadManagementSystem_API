@@ -12,14 +12,14 @@ namespace LMS_DAL
 {
     public class TokenRepository
     {
-        public ResponseStatusModel CheckToken(string Token)
+        public ResponseStatusModel CheckToken(string Token,string userid)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             if (!string.IsNullOrEmpty(Token))
             {
                 using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
                 {
-                    var multi = conn.QueryMultiple("[dbo].[CheckToken]", new { Token }, commandType: CommandType.StoredProcedure);
+                    var multi = conn.QueryMultiple("[dbo].[CheckToken]", new { Token, userid }, commandType: CommandType.StoredProcedure);
                     response = multi.Read<ResponseStatusModel>().SingleOrDefault();
                 }
             }

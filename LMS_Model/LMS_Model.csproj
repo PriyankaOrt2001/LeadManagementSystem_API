@@ -50,6 +50,7 @@
     <Compile Include="LoginModel.cs" />
     <Compile Include="MenuItemModel.cs" />
     <Compile Include="NotificationModel.cs" />
+    <Compile Include="NotificationResponceModel.cs" />
     <Compile Include="PermissionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseMessageModel.cs" />

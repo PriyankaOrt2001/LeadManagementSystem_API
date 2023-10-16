@@ -15,6 +15,14 @@ namespace LMS_BAL
         {
             return repository.GetCompanyList();
         }
+        public GetUserListToSendNotificationList GetUserListToSendNotification(string Lead_Id)
+        {
+            return repository.GetUserListToSendNotification(Lead_Id);
+        }
+        public GetUserList GetUserList()
+        {
+            return repository.GetUserList();
+        }
         public PlanDetailsModel GetPlanDetailsList()
         {
             return repository.GetPlanDetailsList();
@@ -39,13 +47,17 @@ namespace LMS_BAL
         {
             return repository.GetPlanPrice(Plan_Id);
         }
+        public GetRemarkCount GetRemarkCount(string Lead_Id)
+        {
+            return repository.GetRemarkCount(Lead_Id);
+        }
         public TypeOfLeadModel GetLeadTypesList()
         {
             return repository.GetLeadTypesList();
         }
-        public LeadModel GetLeadDetailsList()
+        public LeadModel GetLeadDetailsList(string UserId)
         {
-            return repository.GetLeadDetailsList();
+            return repository.GetLeadDetailsList(UserId);
         }
         public CardImagesData GetImageDetailsList(string Lead_Id)
         {
@@ -203,6 +215,18 @@ namespace LMS_BAL
         public ResponseStatusModel AddToFav(LeadDetails ld)
         {
             return repository.AddToFav(ld);
+        }
+        public GetLeadUpdatedByOwnerDetailsList GetLeadUpdatedByOwnerDetails(string LeadId)
+        {
+            return repository.GetLeadUpdatedByOwnerDetails(LeadId);
+        }
+        public GetUserDetails GetUserDetails(string UserId)
+        {
+            return repository.GetUserDetails(UserId);
+        }
+        public ResponseStatusModel UpdateRemark(RemarkModel rm)
+        {
+            return repository.UpdateRemark(rm);
         }
     }
 }

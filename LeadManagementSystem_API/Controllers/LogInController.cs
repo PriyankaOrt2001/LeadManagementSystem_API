@@ -40,6 +40,28 @@ namespace LeadManagementSystem_API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, urmvm);
         }
 
+        [Route("api/v1/APILogIn")]
+        [HttpPost]
+        public HttpResponseMessage APILogIn(LoginModel login)
+        {
+            LoginModel lm = new LoginModel();
+            UserResponseModelViewModel urmvm = new UserResponseModelViewModel();
+            urmvm.response = new ResponseStatusModel();
+            if (string.IsNullOrEmpty(login.UserName) || string.IsNullOrEmpty(login.Password))
+            {
+                urmvm.response.n = 0;
+                urmvm.response.RStatus = "Failed";
+                urmvm.response.msg = "Username and password is mandatory";
+            }
+            else
+            {
+                login.Password = eds.Encrypt(login.Password);
+                urmvm = ls.APILogIn(login);
+
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, urmvm);
+        }
+
         [Route("api/v1/logout")]
         [HttpGet]
         [TokenAuth]

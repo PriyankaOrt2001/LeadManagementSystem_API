@@ -12,11 +12,11 @@ namespace LMS_BAL
     {
         TokenRepository tr = new TokenRepository();
 
-        public ResponseStatusModel CheckToken(string Token)
+        public ResponseStatusModel CheckToken(string Token,string userid)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             if (!string.IsNullOrEmpty(Token))
-                response = tr.CheckToken(Token);
+                response = tr.CheckToken(Token,userid);
             else
             {
                 response.msg = "Unauthorized";

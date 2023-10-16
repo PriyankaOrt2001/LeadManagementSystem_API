@@ -17,13 +17,13 @@ namespace LeadManagementSystem_API.Services
             em.Etype = ex.GetType().ToString();
             em.Ipaddr = "";
             em.Emsg = Convert.ToString(ex.Message) + "||InnerException=" + Convert.ToString(ex.InnerException) + "||StackTrace=" + Convert.ToString(ex.StackTrace) + "||HelpLink=" + Convert.ToString(ex.HelpLink) + "||HResult=" + Convert.ToString(ex.HResult);
-            if (CB.ContainsKey("action"))
+            if (CB.ContainsKey("Action"))
             {
-                em.Actionname = CB["action"].ToString();
+                em.Actionname = CB["Action"].ToString();
             }
-            if (CB.ContainsKey("controller"))
+            if (CB.ContainsKey("Controller"))
             {
-                em.Controllername = CB["controller"].ToString();
+                em.Controllername = CB["Controller"].ToString();
             }
             em.Esource = "API Controller";
             es.SaveException(em);

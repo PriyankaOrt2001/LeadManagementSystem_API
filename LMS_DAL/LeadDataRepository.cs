@@ -12,6 +12,34 @@ namespace LMS_DAL
 {
     public class LeadDataRepository
     {
+        public GetUserListToSendNotificationList GetUserListToSendNotification(string Lead_Id)
+        {
+            GetUserListToSendNotificationList cm = new GetUserListToSendNotificationList();
+            string sql = "[SP_GetUserListToSendNotification]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    Lead_Id= Lead_Id
+                }, commandType: CommandType.StoredProcedure);
+                cm.GetUserListToSendNotification = multi.Read<GetUserListToSendNotification>().ToList();
+            }
+            return cm;
+        }
+        public GetUserList GetUserList()
+        {
+            GetUserList cm = new GetUserList();
+            string sql = "[SP_GetUserList]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+
+                }, commandType: CommandType.StoredProcedure);
+                cm.GetUserDetails = multi.Read<GetUserDetails>().ToList();
+            }
+            return cm;
+        }
         public CompanyModel GetCompanyList()
         {
             CompanyModel cm = new CompanyModel();
@@ -96,7 +124,7 @@ namespace LMS_DAL
             }
             return lcm;
         }
-        public LeadModel GetLeadDetailsList()
+        public LeadModel GetLeadDetailsList(string UserId)
         {
             LeadModel lm = new LeadModel();
             string sql = "[SP_GetLeadDetailsList]";
@@ -104,7 +132,7 @@ namespace LMS_DAL
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
-
+                    UserId= UserId
                 }, commandType: CommandType.StoredProcedure);
                 lm.LeadList = multi.Read<LeadDetails>().ToList();
             }
@@ -412,6 +440,21 @@ namespace LMS_DAL
                 lm = multi.Read<PlanDetails>().SingleOrDefault();
             }
             return lm;
+        }
+        public GetRemarkCount GetRemarkCount(string Lead_Id)
+        {
+            GetRemarkCount rc = new GetRemarkCount();
+            string sql = "[SP_GetRemarkCount]";
+            using(IDbConnection conn =new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    Lead_Id = Lead_Id
+                },
+                commandType: CommandType.StoredProcedure);
+                rc = multi.Read<GetRemarkCount>().SingleOrDefault();
+            }
+            return rc;
         }
         public TypeOfLeadModel GetTypeOfLeadList(int Category_Id)
         {
@@ -844,6 +887,53 @@ namespace LMS_DAL
                 lm = multi.Read<PlanDetails>().SingleOrDefault();
             }
             return lm;
+        }
+        public GetLeadUpdatedByOwnerDetailsList GetLeadUpdatedByOwnerDetails(string LeadId)
+        {
+            GetLeadUpdatedByOwnerDetailsList od = new GetLeadUpdatedByOwnerDetailsList();
+            string sql = "[SP_GetLeadUpdatedByOwnerDetails]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    LeadId= LeadId
+                }, commandType: CommandType.StoredProcedure);
+                od.GetLeadUpdatedByOwnerDetails = multi.Read<GetLeadUpdatedByOwnerDetails>().ToList();
+            }
+            return od;
+        }
+        public GetUserDetails GetUserDetails(string UserId)
+        {
+            GetUserDetails ud = new GetUserDetails();
+            string sql = "[SP_GetUserDetails]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    UserId = UserId
+                },
+                commandType: CommandType.StoredProcedure);
+                ud = multi.Read<GetUserDetails>().SingleOrDefault();
+            }
+            return ud;
+        }
+        public ResponseStatusModel UpdateRemark(RemarkModel rm)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            string sql = "[SP_UpdateRemark]";
+
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    LeadId = rm.Lead_Id,
+                    CreatedBy = rm.CreatedBy,
+                    Remark_Id = rm.Remark_Id,
+                    Remark = rm.Remark
+                }, commandType: CommandType.StoredProcedure);
+                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return response;
         }
     }
 }

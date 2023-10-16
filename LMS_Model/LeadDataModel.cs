@@ -65,7 +65,7 @@ namespace LMS_Model
         public string remarkCount { get; set; } = "";
         public string BackFileStatus { get; set; } = "";
         public string FrontFileStatus { get; set; } = "";
-        public int IsFav { get; set; } = 0;
+        public int IsFav { get; set; }
         public string Short_Company_Name { get; set; } = "";
 
     }
@@ -111,6 +111,10 @@ namespace LMS_Model
         {
             get; set;
         } = "";
+        public string Remark_Id
+        {
+            get; set;
+        } = "";
     }
     public class CardImagesData
     {
@@ -122,5 +126,54 @@ namespace LMS_Model
         public string BackImgFileName { get; set; } = "";
         public string BackImgBase64 { get; set; } = "";
         public string BackImgFileType { get; set; } = "";
+    }
+    public class GetLeadUpdatedByOwnerDetailsList
+    {
+        public List<GetLeadUpdatedByOwnerDetails> GetLeadUpdatedByOwnerDetails
+        {
+            get; set;
+        }
+        public ResponseStatusModel Response { get; set; }
+    }
+    public class GetLeadUpdatedByOwnerDetails
+    {
+        public string RowNum { get; set; }
+        public string LeadId { get; set; }
+        public string UpdatedBy { get; set; }
+        public string UserName { get; set; }
+        public string UpdatedDate { get; set; }
+        public string UpdatedTime { get; set; }
+    }
+    public class GetUserListToSendNotificationList
+    {
+        public List<GetUserListToSendNotification> GetUserListToSendNotification
+        {
+            get; set;
+        }
+        public ResponseStatusModel Response { get; set; }
+    }
+    public class GetUserListToSendNotification
+    {
+        public string UserId { get; set; }
+        public string DeviceId { get; set; }
+    }
+    public class GetUserList
+    {
+        public List<GetUserDetails> GetUserDetails
+        {
+            get; set;
+        }
+        public ResponseStatusModel Response { get; set; }
+    }
+    public class GetUserDetails
+    {
+        public string UserID { get; set; }
+        public string UserFullName { get; set; }
+        public string UserName { get; set; }
+        public string DeviceId { get; set; }
+    }
+    public class GetRemarkCount
+    {
+        public string TotalRemark { get; set; }
     }
 }

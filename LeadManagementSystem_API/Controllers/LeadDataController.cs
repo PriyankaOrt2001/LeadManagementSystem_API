@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -21,140 +22,59 @@ namespace LeadManagementSystem_API.Controllers
     {
         readonly LeadDataService service = new LeadDataService();
         ResponseMessageModel rm = new ResponseMessageModel();
-
-
-        [HttpGet]
-        [Route("api/v1/notificationsend")]
-        public HttpResponseMessage notificationsend(Notification notification)
+        
+        public void SendNotificationToUser(List<string> deviceTokens, string text, string title)
         {
-            string SERVER_KEY_TOKEN = "BHRp5rPa85ZpngKNOxdnfKMdt_1Sp0hF1SM-33_aGo-4NXSFsZdwerDHrwkzsJlj3AsnwZZi67Oqrpduo5uLAwM";
-            var SENDER_ID = "499601684467";
-            var deviceId = "b6cd33d4fabd0703";
-            WebRequest tRequest;
-            tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
-            tRequest.Method = "post";
-            tRequest.ContentType = " application/json";
-
-            tRequest.Headers.Add(string.Format("Authorization: key={0}", SERVER_KEY_TOKEN));
-            tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
-
-            var a = new
-            {
-                notification = new
-                {
-                    notification.title,
-                    notification.text,
-                    icon = "https://domain/path/to/logo.png",
-                    sound = "mySound"
-                },
-                to = deviceId
-            };
-
-            byte[] byteArray = Encoding.UTF8.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(a));
-            tRequest.ContentLength = byteArray.Length;
-
-            Stream dataStream = tRequest.GetRequestStream();
-            dataStream.Write(byteArray, 0, byteArray.Length);
-            dataStream.Close();
-
-            WebResponse tResponse = tRequest.GetResponse();
-            dataStream = tResponse.GetResponseStream();
-
-            StreamReader tReader = new StreamReader(dataStream);
-            string sResponseFromServer = tReader.ReadToEnd();
-
-            tReader.Close();
-            dataStream.Close();
-            tResponse.Close();
-
-            //return sResponseFromServer;
-            return Request.CreateResponse(HttpStatusCode.OK, notification);
-        }
-
-        [HttpGet]
-        [Route("api/v1/pushnotification")]
-        public HttpResponseMessage sendnotification(Notification obj)
-        {
+            var result = new List<string>();
             try
             {
-                var applicationID = "BHRp5rPa85ZpngKNOxdnfKMdt_1Sp0hF1SM-33_aGo-4NXSFsZdwerDHrwkzsJlj3AsnwZZi67Oqrpduo5uLAwM";
-
+                var SERVER_KEY_TOKEN = "AAAAdFKUt_M:APA91bHkpzqinGJfXBhgQsntqSzEmovuR8J8I2hg3e8HbjFatHN0EY2F3Z8Dj1NkJ2DDGoZSBfYA3LTh5OIysFD_6_VZsY0uLRrHY2xTOyBHcBvrWykCRj26vik6tGhJHl2rFUu_YN-b";
                 var senderId = "499601684467";
-
-                string deviceId = "euxqdp------ioIdL87abVL";
-
+                deviceTokens = new List<string>(){
+                "ebv3mgruRO2K4KrfFQWGrj:APA91bFV7CKUP1c3-71XQ5Qt_4qQBB-WzpcKM4UsHxoGrCJmgZHBQIvihg6Du9f_0iq7rmEGwE5YSuo0LwZkAsmf-uTqYgGuzcmC1vIz7SCDnzmWEfo7zM8qkpeiiC-3QtVcSd0X_mKo"};
                 WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
-
                 tRequest.Method = "post";
-
                 tRequest.ContentType = "application/json";
-
                 var data = new
-
                 {
-
-                    to = deviceId,
-
+                    to = "ebv3mgruRO2K4KrfFQWGrj:APA91bFV7CKUP1c3-71XQ5Qt_4qQBB-WzpcKM4UsHxoGrCJmgZHBQIvihg6Du9f_0iq7rmEGwE5YSuo0LwZkAsmf-uTqYgGuzcmC1vIz7SCDnzmWEfo7zM8qkpeiiC-3QtVcSd0X_mKo",
                     notification = new
-
                     {
-
-                        body = obj.text,
-
-                        title = obj.title,
-
+                        body = text,
+                        title = title,
                         icon = "myicon"
-
                     }
                 };
-
                 var serializer = new JavaScriptSerializer();
-
                 var json = serializer.Serialize(data);
 
                 Byte[] byteArray = Encoding.UTF8.GetBytes(json);
-
-                tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
-
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", SERVER_KEY_TOKEN));
                 tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
-
                 tRequest.ContentLength = byteArray.Length;
-
-
                 using (Stream dataStream = tRequest.GetRequestStream())
                 {
-
                     dataStream.Write(byteArray, 0, byteArray.Length);
-
-
                     using (WebResponse tResponse = tRequest.GetResponse())
                     {
-
                         using (Stream dataStreamResponse = tResponse.GetResponseStream())
                         {
-
                             using (StreamReader tReader = new StreamReader(dataStreamResponse))
                             {
-
-                                String sResponseFromServer = tReader.ReadToEnd();
-
-                                string str = sResponseFromServer;
-
+                                string sResponseFromServer = tReader.ReadToEnd();
+                                result.Add("Error: " + sResponseFromServer);
                             }
                         }
                     }
                 }
             }
-
             catch (Exception ex)
             {
 
                 string str = ex.Message;
 
             }
-            return Request.CreateResponse(HttpStatusCode.OK, obj);
         }
-
 
         [HttpGet]
         [Route("api/v1/GetCompanyList")]
@@ -319,13 +239,13 @@ namespace LeadManagementSystem_API.Controllers
         }
         [HttpGet]
         [Route("api/v1/GetLeadDetailsList")]
-        public HttpResponseMessage GetLeadDetailsList()
+        public HttpResponseMessage GetLeadDetailsList(string UserId)
         {
             LeadModel lm = new LeadModel();
             CardImagesData cid = new CardImagesData();
             try
             {
-                lm = service.GetLeadDetailsList();
+                lm = service.GetLeadDetailsList(UserId);
             }
             catch (Exception ex)
             {
@@ -367,6 +287,13 @@ namespace LeadManagementSystem_API.Controllers
             ResponseStatusModel response = new ResponseStatusModel();
             try
             {
+                var userlist = service.GetUserList();
+                List<string> deviceTokens = userlist.GetUserDetails.Select(obj => obj.DeviceId).ToList();
+                var userdetails = service.GetUserDetails(ld.CreatedBy);
+                //var productname = service.ViewLead(ld.Lead_Id);
+                string deviceId = string.Empty;
+                string title = $"{userdetails.UserFullName} added New Lead.";
+                string body = "";
                 List<CardImages> CardImages = new List<CardImages>();
                 for (int i = 0; i < 2; i++)
                 {
@@ -394,10 +321,17 @@ namespace LeadManagementSystem_API.Controllers
                     }
                 }
 
-
                 if (CardImages == null)
                 {
-                    response = service.AddLead(ld);
+                    if (userlist == null)
+                    {
+                        response = service.AddLead(ld);
+                    }
+                    else
+                    {
+                        SendNotificationToUser(deviceTokens, body, title);
+                        response = service.AddLead(ld);
+                    }
                 }
                 else
                 {
@@ -465,8 +399,6 @@ namespace LeadManagementSystem_API.Controllers
                                         imagedata.FileType = fi.Extension;
                                         imagedata.ImagePath = ServerPath + "Documents/" + newFilename + extension;
                                     }
-
-
                                 }
                                 else
                                 {
@@ -474,10 +406,25 @@ namespace LeadManagementSystem_API.Controllers
                                 }
                             }
                         }
-
                     }
-                    response = service.AddLead(ld);
-
+                    if (response.msg == null)
+                    {
+                        if (userlist == null)
+                        {
+                            response = service.AddLead(ld);
+                        }
+                        else
+                        {
+                            SendNotificationToUser(deviceTokens, body, title);
+                            response = service.AddLead(ld);
+                        }
+                    }
+                    else
+                    {
+                        response.n = 0;
+                        response.RStatus = "Failed";
+                        response.LeadId = "";
+                    }
                 }
             }
             catch (Exception ex)
@@ -644,7 +591,6 @@ namespace LeadManagementSystem_API.Controllers
             try
             {
                 response = service.UpdateDraftLead(ld);
-
             }
             catch (Exception ex)
             {
@@ -665,7 +611,6 @@ namespace LeadManagementSystem_API.Controllers
             try
             {
                 response = service.UpdateFinalLead(ld);
-
             }
             catch (Exception ex)
             {
@@ -686,7 +631,6 @@ namespace LeadManagementSystem_API.Controllers
             try
             {
                 response = service.UpdateFinalDraftLead(ld);
-
             }
             catch (Exception ex)
             {
@@ -736,7 +680,6 @@ namespace LeadManagementSystem_API.Controllers
                         });
                     }
                 }
-
                 if (CardImages == null)
                 {
                     response = service.UpdateFirstDraftLead(ld);
@@ -800,7 +743,6 @@ namespace LeadManagementSystem_API.Controllers
                                     {
                                         ld.FrontImgFileType = fi.Extension;
                                         ld.BackImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
-
                                     }
                                     else
                                     {
@@ -816,7 +758,6 @@ namespace LeadManagementSystem_API.Controllers
                         }
                         else
                         {
-
                             if (imagedata.ImgType == "front")
                             {
                                 if (ld.FrontFileStatus == null) { }
@@ -827,7 +768,6 @@ namespace LeadManagementSystem_API.Controllers
                                     ld.FrontImgFileName = cid.FrontImgFileName;
                                     ld.FrontImgBase64 = cid.FrontImgBase64;
                                 }
-
                             }
                             else if (imagedata.ImgType == "back")
                             {
@@ -839,13 +779,20 @@ namespace LeadManagementSystem_API.Controllers
                                     ld.BackImgFileType = cid.BackImgFileType;
                                     ld.BackImgOfCardPath = cid.BackImgOfCardPath;
                                 }
-
                             }
                             else { }
                         }
                     }
-
-                    response = service.UpdateFirstDraftLead(ld);
+                    if (response.msg == null)
+                    {
+                        response = service.UpdateFirstDraftLead(ld);
+                    }
+                    else
+                    {
+                        response.n = 0;
+                        response.RStatus = "Failed";
+                        response.LeadId = "";
+                    }
                 }
             }
             catch (Exception ex)
@@ -960,7 +907,6 @@ namespace LeadManagementSystem_API.Controllers
                                     {
                                         ld.FrontImgFileType = fi.Extension;
                                         ld.BackImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
-
                                     }
                                     else
                                     {
@@ -976,7 +922,6 @@ namespace LeadManagementSystem_API.Controllers
                         }
                         else
                         {
-
                             if (imagedata.ImgType == "front")
                             {
                                 if (ld.FrontFileStatus == null) { }
@@ -994,7 +939,6 @@ namespace LeadManagementSystem_API.Controllers
                                     ld.FrontImgFileName = cid.FrontImgFileName;
                                     ld.FrontImgBase64 = cid.FrontImgBase64;
                                 }
-
                             }
                             else if (imagedata.ImgType == "back")
                             {
@@ -1013,13 +957,20 @@ namespace LeadManagementSystem_API.Controllers
                                     ld.BackImgFileType = cid.BackImgFileType;
                                     ld.BackImgOfCardPath = cid.BackImgOfCardPath;
                                 }
-
                             }
                             else { }
                         }
                     }
-
-                    response = service.UpdateLead(ld);
+                    if (response.msg == null)
+                    {
+                        response = service.UpdateLead(ld);
+                    }
+                    else
+                    {
+                        response.n = 0;
+                        response.RStatus = "Failed";
+                        response.LeadId = "";
+                    }
                 }
             }
             catch (Exception ex)
@@ -1033,7 +984,41 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
-
+        [HttpPost]
+        [Route("api/v1/AddRemarkAndNotify")]
+        public HttpResponseMessage AddRemarkAndNotify(RemarkModel remarkModel)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            try
+            {
+                var userlist = service.GetUserList();
+                List<string> deviceTokens = userlist.GetUserDetails.Select(obj => obj.DeviceId).ToList();
+                var userdetails = service.GetUserDetails(remarkModel.CreatedBy);
+                var productname = service.ViewLead(remarkModel.Lead_Id);
+                string deviceId = string.Empty;
+                string title = $"{userdetails.UserFullName} added remark in {productname.CompanyName} Project.";
+                string body = remarkModel.Remark;
+                if (userlist == null)
+                {
+                    response = service.AddRemark(remarkModel);
+                }
+                else
+                {
+                    SendNotificationToUser(deviceTokens, body, title);
+                    response = service.AddRemark(remarkModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "AddRemarkAndNotify" },
+                    { "Controller", "LeadDataController" }
+                };
+                response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
         [HttpPost]
         [Route("api/v1/AddRemark")]
         public HttpResponseMessage AddRemark(RemarkModel remarkModel)
@@ -1041,7 +1026,22 @@ namespace LeadManagementSystem_API.Controllers
             ResponseStatusModel response = new ResponseStatusModel();
             try
             {
-                response = service.AddRemark(remarkModel);
+                var userlist = service.GetUserListToSendNotification(remarkModel.Lead_Id);
+                List<string> deviceTokens = userlist.GetUserListToSendNotification.Select(obj => obj.DeviceId).ToList();
+                var userdetails = service.GetUserDetails(remarkModel.CreatedBy);
+                var productname = service.ViewLead(remarkModel.Lead_Id);
+                string deviceId = string.Empty;
+                string title = $"{userdetails.UserFullName} added remark in {productname.CompanyName} Project.";
+                string body = remarkModel.Remark;
+                if (userlist == null)
+                {
+                    response = service.AddRemark(remarkModel);
+                }
+                else
+                {
+                    SendNotificationToUser(deviceTokens, body, title);
+                    response = service.AddRemark(remarkModel);
+                }
             }
             catch (Exception ex)
             {
@@ -1091,7 +1091,6 @@ namespace LeadManagementSystem_API.Controllers
                 {
                     response.LeadId = ld.LeadId;
                 }
-                
             }
             catch (Exception ex)
             {
@@ -1122,7 +1121,6 @@ namespace LeadManagementSystem_API.Controllers
                 {
                     response.LeadId = ld.LeadId;
                 }
-
             }
             catch (Exception ex)
             {
@@ -1237,6 +1235,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
         [HttpGet]
         [Route("api/v1/RemovePlan")]
         public HttpResponseMessage RemovePlan(int id)
@@ -1257,6 +1256,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
         [HttpGet]
         [Route("api/v1/ViewCategoryDetails")]
         public HttpResponseMessage ViewCategoryDetails(int Category_Id)
@@ -1277,6 +1277,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, ld);
         }
+
         [HttpGet]
         [Route("api/v1/ViewTypeOfLeadDetails")]
         public HttpResponseMessage ViewTypeOfLeadDetails(int TypeOfLead_ID)
@@ -1297,6 +1298,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, ld);
         }
+
         [HttpGet]
         [Route("api/v1/ViewCompanyDetails")]
         public HttpResponseMessage ViewCompanyDetails(int Company_Id)
@@ -1317,6 +1319,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, ld);
         }
+
         [HttpGet]
         [Route("api/v1/ViewAssignToDetails")]
         public HttpResponseMessage ViewAssignToDetails(int Employee_Id)
@@ -1337,6 +1340,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, ld);
         }
+
         [HttpGet]
         [Route("api/v1/ViewLeadSource")]
         public HttpResponseMessage ViewLeadSource(int SourceId)
@@ -1357,6 +1361,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, ld);
         }
+
         [HttpGet]
         [Route("api/v1/ViewPlanDetails")]
         public HttpResponseMessage ViewPlanDetails(int PlanId)
@@ -1377,6 +1382,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, ld);
         }
+
         [HttpPost]
         [Route("api/v1/UpdateCompany")]
         public HttpResponseMessage UpdateCompany(CompanyDetails cmm)
@@ -1397,6 +1403,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
         [HttpPost]
         [Route("api/v1/UpdateCategory")]
         public HttpResponseMessage UpdateCategory(LeadCategoryDetails cd)
@@ -1417,6 +1424,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
         [HttpPost]
         [Route("api/v1/UpdateTypeOfLead")]
         public HttpResponseMessage UpdateTypeOfLead(TypeOfLeadDetails ld)
@@ -1437,6 +1445,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
         [HttpPost]
         [Route("api/v1/UpdateEmployee")]
         public HttpResponseMessage UpdateEmployee(AssignToDetails atd)
@@ -1457,6 +1466,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
         [HttpPost]
         [Route("api/v1/UpdateLeadSource")]
         public HttpResponseMessage UpdateLeadSource(LeadSourceDetails sd)
@@ -1477,6 +1487,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
         [HttpPost]
         [Route("api/v1/AddNewPlan")]
         public HttpResponseMessage AddNewPlan(PlanDetails pd)
@@ -1497,6 +1508,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
         [HttpPost]
         [Route("api/v1/UpdatePlan")]
         public HttpResponseMessage UpdatePlan(PlanDetails pd)
@@ -1517,5 +1529,69 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
+        [HttpGet]
+        [Route("api/v1/GetLeadUpdatedByOwnerDetailsList")]
+        public HttpResponseMessage GetLeadUpdatedByOwnerDetailsList(string LeadId)
+        {
+            GetLeadUpdatedByOwnerDetailsList od = new GetLeadUpdatedByOwnerDetailsList();
+            try
+            {
+                od = service.GetLeadUpdatedByOwnerDetails(LeadId);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetLeadUpdatedByOwnerDetailsList" },
+                    { "Controller", "LeadDataController" }
+                };
+                od.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, od);
+        }
+
+        [HttpGet]
+        [Route("api/v1/GetRemarkCount")]
+        public HttpResponseMessage GetRemarkCount(string Lead_Id)
+        {
+            GetRemarkCount rc = new GetRemarkCount();
+            try
+            {
+                rc = service.GetRemarkCount(Lead_Id);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetRemarkCount" },
+                    { "Controller", "LeadDataController" }
+                };
+                rm.response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, rc);
+        }
+
+        [HttpPost]
+        [Route("api/v1/UpdateRemark")]
+        public HttpResponseMessage UpdateRemark(RemarkModel rm)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            try
+            {
+                response = service.UpdateRemark(rm);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "UpdateRemark" },
+                    { "Controller", "LeadDataController" }
+                };
+                response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
     }
 }

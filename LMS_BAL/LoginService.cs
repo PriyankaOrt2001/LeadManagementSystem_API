@@ -16,5 +16,9 @@ namespace LMS_BAL
         {
             return lr.Login(login);
         }
+        public UserResponseModelViewModel APILogIn(LoginModel login)
+        {
+            return lr.APILogIn(login);
+        }
     }
 }

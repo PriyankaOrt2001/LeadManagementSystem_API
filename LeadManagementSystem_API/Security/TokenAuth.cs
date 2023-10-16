@@ -19,10 +19,11 @@ namespace LeadManagementSystem_API.Security
             TokenService Ts = new TokenService();
             bool ValidKey = false;
             IEnumerable<string> requestHeaders;
-            var checkApiKeyExists = actionContext.Request.Headers.TryGetValues("authToken", out requestHeaders);
-            if (checkApiKeyExists)
+            var token = actionContext.Request.Headers.GetValues("authToken").FirstOrDefault();
+            var userid = actionContext.Request.Headers.GetValues("userid").FirstOrDefault();
+            if (token !="")
             {
-                response = Ts.CheckToken(requestHeaders.FirstOrDefault());
+                response = Ts.CheckToken(token,userid);
                 if (response.n == 1)
                     ValidKey = true;
             }
