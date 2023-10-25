@@ -5,6 +5,7 @@ using LMS_BAL;
 using LMS_Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Management;
@@ -23,21 +24,19 @@ namespace LeadManagementSystem_API.Controllers
         readonly LeadDataService service = new LeadDataService();
         ResponseMessageModel rm = new ResponseMessageModel();
         
-        public void SendNotificationToUser(List<string> deviceTokens, string text, string title)
+        public void SendNotificationToUser(List<string> deviceTokenes, string text, string title)
         {
             var result = new List<string>();
             try
             {
                 var SERVER_KEY_TOKEN = "AAAAdFKUt_M:APA91bHkpzqinGJfXBhgQsntqSzEmovuR8J8I2hg3e8HbjFatHN0EY2F3Z8Dj1NkJ2DDGoZSBfYA3LTh5OIysFD_6_VZsY0uLRrHY2xTOyBHcBvrWykCRj26vik6tGhJHl2rFUu_YN-b";
                 var senderId = "499601684467";
-                deviceTokens = new List<string>(){
-                "ebv3mgruRO2K4KrfFQWGrj:APA91bFV7CKUP1c3-71XQ5Qt_4qQBB-WzpcKM4UsHxoGrCJmgZHBQIvihg6Du9f_0iq7rmEGwE5YSuo0LwZkAsmf-uTqYgGuzcmC1vIz7SCDnzmWEfo7zM8qkpeiiC-3QtVcSd0X_mKo"};
                 WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
                 tRequest.Method = "post";
                 tRequest.ContentType = "application/json";
                 var data = new
                 {
-                    to = "ebv3mgruRO2K4KrfFQWGrj:APA91bFV7CKUP1c3-71XQ5Qt_4qQBB-WzpcKM4UsHxoGrCJmgZHBQIvihg6Du9f_0iq7rmEGwE5YSuo0LwZkAsmf-uTqYgGuzcmC1vIz7SCDnzmWEfo7zM8qkpeiiC-3QtVcSd0X_mKo",
+                    registration_ids= deviceTokenes,
                     notification = new
                     {
                         body = text,
@@ -258,6 +257,51 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, lm);
         }
+        [HttpPost]
+        [Route("api/v1/FilterLeadTableDetails")]
+        public HttpResponseMessage FilterLeadTableDetails(FilterBy filterBy)
+        {
+            LeadModel lm = new LeadModel();
+            try
+            {
+                lm = service.GetLeadDetailsList(filterBy.UserId);
+                if (filterBy.CompanyId == null) filterBy.CompanyId = "No Records...";
+                if (filterBy.CategoryId == null) filterBy.CategoryId = "No Records...";
+                if (filterBy.AssignedId == null) filterBy.AssignedId = "No Records...";
+                if (filterBy.Priority == null) filterBy.Priority = "No Records...";
+                var CompanyIdList = filterBy.CompanyId.Split(',')
+                              .Select(s => s.Trim('\''))
+                              .ToList();
+                var CategoryIdList = filterBy.CategoryId.Split(',')
+                              .Select(s => s.Trim('\''))
+                              .ToList();
+                var AssignedIdList = filterBy.AssignedId.Split(',')
+                              .Select(s => s.Trim('\''))
+                              .ToList();
+                var PriorityIdList = filterBy.Priority.Split(',')
+                              .Select(s => s.Trim('\''))
+                              .ToList();
+                var filteredData = (from data in lm.LeadList
+                                    where 
+                                        (CompanyIdList.Contains(data.CompanyId))||
+                                        (CategoryIdList.Contains(data.ProjectTypeId))||
+                                        (AssignedIdList.Contains(data.AssignToId))||
+                                        (PriorityIdList.Contains(data.Category))
+                                    select data).ToList();
+
+                lm.LeadList = filteredData;
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "FilterLeadTableDetails" },
+                    { "Controller" , "LeadDataController" }
+                }; 
+                lm.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, lm);
+        }
 
         [HttpGet]
         [Route("api/v1/GetRecentLeadDetailsList")]
@@ -294,6 +338,23 @@ namespace LeadManagementSystem_API.Controllers
                 string deviceId = string.Empty;
                 string title = $"{userdetails.UserFullName} added New Lead.";
                 string body = "";
+
+                DataTable myDataTable = new DataTable();
+
+                myDataTable.Columns.Add("RowID", typeof(int));
+                myDataTable.Columns.Add("NotificationSendTo", typeof(string));
+                myDataTable.Columns.Add("NotificationSendBy", typeof(string));
+                myDataTable.Columns.Add("NotificationType", typeof(string));
+                myDataTable.Columns.Add("NotificationMsg", typeof(string));
+                myDataTable.Columns.Add("NotificationTitle", typeof(string));
+
+                int j = 1;
+                foreach (var value in userlist.GetUserDetails)
+                {
+                    myDataTable.Rows.Add(j, value.UserID, ld.CreatedBy, "Notification","", title);
+                    j++;
+                }
+
                 List<CardImages> CardImages = new List<CardImages>();
                 for (int i = 0; i < 2; i++)
                 {
@@ -309,7 +370,7 @@ namespace LeadManagementSystem_API.Controllers
                         });
                     }
                     else if (i == 1)
-                    {
+                    { 
                         CardImages.Add(new CardImages()
                         {
                             Base64 = ld.BackImgBase64,
@@ -325,12 +386,12 @@ namespace LeadManagementSystem_API.Controllers
                 {
                     if (userlist == null)
                     {
-                        response = service.AddLead(ld);
+                        response = service.AddLead(ld, myDataTable);
                     }
                     else
                     {
                         SendNotificationToUser(deviceTokens, body, title);
-                        response = service.AddLead(ld);
+                        response = service.AddLead(ld, myDataTable);
                     }
                 }
                 else
@@ -411,12 +472,12 @@ namespace LeadManagementSystem_API.Controllers
                     {
                         if (userlist == null)
                         {
-                            response = service.AddLead(ld);
+                            response = service.AddLead(ld,myDataTable);
                         }
                         else
                         {
                             SendNotificationToUser(deviceTokens, body, title);
-                            response = service.AddLead(ld);
+                            response = service.AddLead(ld, myDataTable);
                         }
                     }
                     else
@@ -799,7 +860,7 @@ namespace LeadManagementSystem_API.Controllers
             {
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
-                    { "Action", "UpdateLead" },
+                    { "Action", "UpdateFirstDraftLead" },
                     { "Controller", "LeadDataController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
@@ -996,16 +1057,39 @@ namespace LeadManagementSystem_API.Controllers
                 var userdetails = service.GetUserDetails(remarkModel.CreatedBy);
                 var productname = service.ViewLead(remarkModel.Lead_Id);
                 string deviceId = string.Empty;
-                string title = $"{userdetails.UserFullName} added remark in {productname.CompanyName} Project.";
+                string ProductName = string.Empty;
+                if (productname.CompanyName == null)
+                {
+                    ProductName = "";
+                }
+                else { ProductName = productname.CompanyName; };
+                string title = $"New Remark added to {ProductName} by {userdetails.UserFullName}.";
                 string body = remarkModel.Remark;
+
+                DataTable myDataTable = new DataTable();
+
+                myDataTable.Columns.Add("RowID", typeof(int));
+                myDataTable.Columns.Add("NotificationSendTo", typeof(string));
+                myDataTable.Columns.Add("NotificationSendBy", typeof(string));
+                myDataTable.Columns.Add("NotificationType", typeof(string));
+                myDataTable.Columns.Add("NotificationMsg", typeof(string));
+                myDataTable.Columns.Add("NotificationTitle", typeof(string));
+                
+                int i = 1;
+                foreach (var value in userlist.GetUserDetails)
+                {
+                    myDataTable.Rows.Add(i,value.UserID, remarkModel.CreatedBy, "Reminder", remarkModel.Remark, title);
+                    i++;
+                }
+
                 if (userlist == null)
                 {
-                    response = service.AddRemark(remarkModel);
+                    response = service.AddRemark(remarkModel, myDataTable);
                 }
                 else
                 {
                     SendNotificationToUser(deviceTokens, body, title);
-                    response = service.AddRemark(remarkModel);
+                    response = service.AddRemark(remarkModel, myDataTable);
                 }
             }
             catch (Exception ex)
@@ -1031,16 +1115,39 @@ namespace LeadManagementSystem_API.Controllers
                 var userdetails = service.GetUserDetails(remarkModel.CreatedBy);
                 var productname = service.ViewLead(remarkModel.Lead_Id);
                 string deviceId = string.Empty;
-                string title = $"{userdetails.UserFullName} added remark in {productname.CompanyName} Project.";
+                string ProductName = string.Empty;
+                if (productname.CompanyName == null)
+                {
+                    ProductName = "";
+                }
+                else { ProductName = productname.CompanyName; };
+                string title = $"New Remark added to {ProductName} by {userdetails.UserFullName}.";
                 string body = remarkModel.Remark;
+
+                DataTable myDataTable = new DataTable();
+
+                myDataTable.Columns.Add("RowID", typeof(int));
+                myDataTable.Columns.Add("NotificationSendTo", typeof(string));
+                myDataTable.Columns.Add("NotificationSendBy", typeof(string));
+                myDataTable.Columns.Add("NotificationType", typeof(string));
+                myDataTable.Columns.Add("NotificationMsg", typeof(string));
+                myDataTable.Columns.Add("NotificationTitle", typeof(string));
+
+                int i = 1;
+                foreach (var value in userlist.GetUserListToSendNotification)
+                {
+                    myDataTable.Rows.Add(i, value.UserId, remarkModel.CreatedBy, "Reminder", remarkModel.Remark, title);
+                    i++;
+                }
+
                 if (userlist == null)
                 {
-                    response = service.AddRemark(remarkModel);
+                    response = service.AddRemark(remarkModel, myDataTable);
                 }
                 else
                 {
                     SendNotificationToUser(deviceTokens, body, title);
-                    response = service.AddRemark(remarkModel);
+                    response = service.AddRemark(remarkModel, myDataTable);
                 }
             }
             catch (Exception ex)
@@ -1134,7 +1241,26 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
-
+        [HttpGet]
+        [Route("api/v1/RemoveLead")]
+        public HttpResponseMessage RemoveLead(string LeadId,string UserId)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            try
+            {
+                response = service.RemoveLead(LeadId, UserId);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "RemoveLead" },
+                    { "Controller", "LeadDataController" }
+                };
+                response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
         [HttpGet]
         [Route("api/v1/RemoveEmployee")]
         public HttpResponseMessage RemoveEmployee(int id)
@@ -1194,6 +1320,46 @@ namespace LeadManagementSystem_API.Controllers
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+        [HttpGet]
+        [Route("api/v1/NotificationDetails")]
+        public HttpResponseMessage NotificationDetails(string UserId)
+        {
+            NotificationDetailsList NotificationDetailsList = new NotificationDetailsList();
+            try
+            {
+                NotificationDetailsList = service.NotificationDetails(UserId);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "NotificationDetails" },
+                    { "Controller", "LeadDataController" }
+                };
+                NotificationDetailsList.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, NotificationDetailsList);
+        }
+        [HttpGet]
+        [Route("api/v1/RecentNotificationDetails")]
+        public HttpResponseMessage RecentNotificationDetails(string UserId)
+        {
+            NotificationDetailsList NotificationDetailsList = new NotificationDetailsList();
+            try
+            {
+                NotificationDetailsList = service.RecentNotificationDetails(UserId);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "RecentNotificationDetails" },
+                    { "Controller", "LeadDataController" }
+                };
+                NotificationDetailsList.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, NotificationDetailsList);
         }
         [HttpGet]
         [Route("api/v1/RemoveLeadSource")]
@@ -1593,5 +1759,45 @@ namespace LeadManagementSystem_API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        [HttpGet]
+        [Route("api/v1/UpdateNotificationSeenStatus")]
+        public HttpResponseMessage UpdateNotificationSeenStatus(string UserId)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            try
+            {
+                response = service.UpdateNotificationSeenStatus(UserId);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "UpdateNotificationSeenStatus" },
+                    { "Controller", "LeadDataController" }
+                };
+                response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+        [HttpGet]
+        [Route("api/v1/GetCountOfUnSeenNotification")]
+        public HttpResponseMessage GetCountOfUnSeenNotification(string UserId)
+        {
+            GetCountOfUnSeenNotification rc = new GetCountOfUnSeenNotification();
+            try
+            {
+                rc = service.GetCountOfUnSeenNotification(UserId);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetCountOfUnSeenNotification" },
+                    { "Controller", "LeadDataController" }
+                };
+                rm.response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, rc);
+        }
     }
 }

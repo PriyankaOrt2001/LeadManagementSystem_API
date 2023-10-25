@@ -2,6 +2,7 @@
 using LMS_Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,10 @@ namespace LMS_BAL
         {
             return repository.GetRemarkCount(Lead_Id);
         }
+        public GetCountOfUnSeenNotification GetCountOfUnSeenNotification(string UserId)
+        {
+            return repository.GetCountOfUnSeenNotification(UserId);
+        }
         public TypeOfLeadModel GetLeadTypesList()
         {
             return repository.GetLeadTypesList();
@@ -58,6 +63,10 @@ namespace LMS_BAL
         public LeadModel GetLeadDetailsList(string UserId)
         {
             return repository.GetLeadDetailsList(UserId);
+        }
+        public LeadModel FilterLeadTableDetails(FilterBy filterBy)
+        {
+            return repository.FilterLeadTableDetails(filterBy);
         }
         public CardImagesData GetImageDetailsList(string Lead_Id)
         {
@@ -67,9 +76,9 @@ namespace LMS_BAL
         {
             return repository.GetRecentLeadDetailsList();
         }
-        public ResponseStatusModel AddLead(LeadDetails ld)
+        public ResponseStatusModel AddLead(LeadDetails ld,DataTable myDataTable)
         {
-            return repository.AddLead(ld);
+            return repository.AddLead(ld, myDataTable);
         }
         public ResponseStatusModel AddNewLeadSource(LeadSourceDetails ld)
         {
@@ -95,9 +104,9 @@ namespace LMS_BAL
         {
             return repository.AddTypeOfLead(tol);
         }
-        public ResponseStatusModel AddRemark(RemarkModel remarkModel)
+        public ResponseStatusModel AddRemark(RemarkModel remarkModel, DataTable dataTable)
         {
-            return repository.AddRemark(remarkModel);
+            return repository.AddRemark(remarkModel, dataTable);
         }
         public LeadDetails ViewLead(string Lead_Id)
         {
@@ -168,6 +177,10 @@ namespace LMS_BAL
         {
             return repository.RemoveCompany(CompanyId);
         }
+        public ResponseStatusModel RemoveLead(string LeadId,string UserId)
+        {
+            return repository.RemoveLead(LeadId, UserId);
+        }
         public ResponseStatusModel RemoveEmployee(int Employee_Id)
         {
             return repository.RemoveEmployee(Employee_Id);
@@ -183,6 +196,14 @@ namespace LMS_BAL
         public ResponseStatusModel RemoveLeadSource(int SourceId)
         {
             return repository.RemoveLeadSource(SourceId);
+        }
+        public NotificationDetailsList NotificationDetails(string UserId)
+        {
+            return repository.NotificationDetails(UserId);
+        }
+        public NotificationDetailsList RecentNotificationDetails(string UserId)
+        {
+            return repository.RecentNotificationDetails(UserId);
         }
         public ResponseStatusModel RemovePlan(int PlanId)
         {
@@ -227,6 +248,10 @@ namespace LMS_BAL
         public ResponseStatusModel UpdateRemark(RemarkModel rm)
         {
             return repository.UpdateRemark(rm);
+        }
+        public ResponseStatusModel UpdateNotificationSeenStatus(string UserId)
+        {
+            return repository.UpdateNotificationSeenStatus(UserId);
         }
     }
 }

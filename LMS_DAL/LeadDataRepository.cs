@@ -138,6 +138,24 @@ namespace LMS_DAL
             }
             return lm;
         }
+        public LeadModel FilterLeadTableDetails(FilterBy filterBy)
+        {
+            LeadModel lm = new LeadModel();
+            string sql = "[SP_FilterLeadTableDetails]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    UserId = filterBy.UserId,
+                    CompanyId = filterBy.CompanyId,
+                    CategoryId= filterBy.CategoryId,
+                    Priority= filterBy.Priority,
+                    AssignedId= filterBy.AssignedId
+                }, commandType: CommandType.StoredProcedure) ;
+                lm.LeadList = multi.Read<LeadDetails>().ToList();
+            }
+            return lm;
+        }
         public CardImagesData GetImageDetailsList(string Lead_Id)
         {
             CardImagesData cid = new CardImagesData();
@@ -167,7 +185,7 @@ namespace LMS_DAL
             }
             return lm;
         }
-        public ResponseStatusModel AddLead(LeadDetails ld)
+        public ResponseStatusModel AddLead(LeadDetails ld, DataTable dataTable)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             string sql = "[SP_AddNewLeadDetails]";
@@ -207,8 +225,8 @@ namespace LMS_DAL
                     BackImgFileName = ld.BackImgFileName,
                     BackImgBase64 = ld.BackImgBase64,
                     BackImgFileType = ld.BackImgFileType,
-                    IsFinal = ld.IsFinal
-
+                    IsFinal = ld.IsFinal,
+                    data = dataTable
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
@@ -456,6 +474,21 @@ namespace LMS_DAL
             }
             return rc;
         }
+        public GetCountOfUnSeenNotification GetCountOfUnSeenNotification(string UserId)
+        {
+            GetCountOfUnSeenNotification rc = new GetCountOfUnSeenNotification();
+            string sql = "[SP_GetCountOfUnSeenNotification]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    UserId = UserId
+                },
+                commandType: CommandType.StoredProcedure);
+                rc = multi.Read<GetCountOfUnSeenNotification>().SingleOrDefault();
+            }
+            return rc;
+        }
         public TypeOfLeadModel GetTypeOfLeadList(int Category_Id)
         {
             TypeOfLeadModel tolm = new TypeOfLeadModel();
@@ -630,7 +663,7 @@ namespace LMS_DAL
             return response;
         }
 
-        public ResponseStatusModel AddRemark(RemarkModel remarkModel)
+        public ResponseStatusModel AddRemark(RemarkModel remarkModel, DataTable dataTable)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             string sql = "[SP_AddRemark]";
@@ -640,7 +673,8 @@ namespace LMS_DAL
                 {
                     CreatedBy = remarkModel.CreatedBy,
                     Remark = remarkModel.Remark,
-                    Lead_Id = remarkModel.Lead_Id
+                    Lead_Id = remarkModel.Lead_Id,
+                    data= dataTable
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
@@ -701,6 +735,21 @@ namespace LMS_DAL
                 var multi = conn.QueryMultiple(sql, new
                 {
                     Company_Id = Company_Id
+                }, commandType: CommandType.StoredProcedure);
+                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return response;
+        }
+        public ResponseStatusModel RemoveLead(string LeadId,string UserId)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            string sql = "[SP_RemoveLead]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    LeadId = LeadId,
+                    UserId = UserId
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
@@ -888,6 +937,36 @@ namespace LMS_DAL
             }
             return lm;
         }
+        public NotificationDetailsList NotificationDetails(string UserId)
+        {
+            NotificationDetailsList lm = new NotificationDetailsList();
+            string sql = "[SP_NotificationDetails]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    UserId = UserId
+                },
+                commandType: CommandType.StoredProcedure);
+                lm.NotificationDetails = multi.Read<NotificationDetails>().ToList();
+            }
+            return lm;
+        }
+        public NotificationDetailsList RecentNotificationDetails(string UserId)
+        {
+            NotificationDetailsList lm = new NotificationDetailsList();
+            string sql = "[SP_RecentNotificationDetails]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    UserId = UserId
+                },
+                commandType: CommandType.StoredProcedure);
+                lm.NotificationDetails = multi.Read<NotificationDetails>().ToList();
+            }
+            return lm;
+        }
         public GetLeadUpdatedByOwnerDetailsList GetLeadUpdatedByOwnerDetails(string LeadId)
         {
             GetLeadUpdatedByOwnerDetailsList od = new GetLeadUpdatedByOwnerDetailsList();
@@ -930,6 +1009,21 @@ namespace LMS_DAL
                     CreatedBy = rm.CreatedBy,
                     Remark_Id = rm.Remark_Id,
                     Remark = rm.Remark
+                }, commandType: CommandType.StoredProcedure);
+                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return response;
+        }
+        public ResponseStatusModel UpdateNotificationSeenStatus(string UserId)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            string sql = "[SP_UpdateNotificationSeenStatus]";
+
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    UserId = UserId
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
