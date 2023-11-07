@@ -36,6 +36,10 @@ namespace LMS_BAL
         {
             return repository.GetLeadSourceList();
         }
+        public LeadSourceModel GetSourceList()
+        {
+            return repository.GetSourceList();
+        }
         public LeadCategoryModel GetLeadCategoryList()
         {
             return repository.GetLeadCategoryList();

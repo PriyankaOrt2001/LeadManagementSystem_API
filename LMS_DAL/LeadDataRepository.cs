@@ -96,6 +96,20 @@ namespace LMS_DAL
             }
             return lsm;
         }
+        public LeadSourceModel GetSourceList()
+        {
+            LeadSourceModel lsm = new LeadSourceModel();
+            string sql = "[SP_GetSourceList]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+
+                }, commandType: CommandType.StoredProcedure);
+                lsm.LeadSourceDetails = multi.Read<LeadSourceDetails>().ToList();
+            }
+            return lsm;
+        }
         public LeadCategoryModel GetLeadCategoryList()
         {
             LeadCategoryModel lcm = new LeadCategoryModel();

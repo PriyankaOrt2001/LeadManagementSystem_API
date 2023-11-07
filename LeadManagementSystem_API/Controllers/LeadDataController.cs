@@ -156,6 +156,27 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, lsm);
         }
+
+        [HttpGet]
+        [Route("api/v1/GetSourceList")]
+        public HttpResponseMessage GetSourceList()
+        {
+            LeadSourceModel lsm = new LeadSourceModel();
+            try
+            {
+                lsm = service.GetSourceList();
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetSourceList" },
+                    { "Controller", "LeadDataController" }
+                };
+                lsm.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, lsm);
+        }
         [HttpGet]
         [Route("api/v1/GetLeadCategoryList")]
         public HttpResponseMessage GetLeadCategoryList()
@@ -258,7 +279,7 @@ namespace LeadManagementSystem_API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, lm);
         }
         [HttpPost]
-        [Route("api/v1/FilterLeadTableDetails")]
+        [Route("api/v1/FilterLeadTableDetails")] 
         public HttpResponseMessage FilterLeadTableDetails(FilterBy filterBy)
         {
             LeadModel lm = new LeadModel();
@@ -281,13 +302,40 @@ namespace LeadManagementSystem_API.Controllers
                 var PriorityIdList = filterBy.Priority.Split(',')
                               .Select(s => s.Trim('\''))
                               .ToList();
-                var filteredData = (from data in lm.LeadList
-                                    where 
-                                        (CompanyIdList.Contains(data.CompanyId))||
-                                        (CategoryIdList.Contains(data.ProjectTypeId))||
-                                        (AssignedIdList.Contains(data.AssignToId))||
-                                        (PriorityIdList.Contains(data.Category))
-                                    select data).ToList();
+                var filteredData = lm.LeadList;
+                if(CompanyIdList[0]!= "No Records...")
+                {
+                    var filteredDataForCompany = (from data in filteredData
+                                                  where
+                                                      (CompanyIdList.Contains(data.CompanyId))
+                                                  select data).ToList();
+                    filteredData = filteredDataForCompany;
+                }
+                if (CategoryIdList[0] != "No Records...")
+                {
+                    var filteredDataForCategory = (from data in filteredData
+                                                   where
+                                                       (CategoryIdList.Contains(data.ProjectTypeId))
+                                                   select data).ToList();
+                    filteredData = filteredDataForCategory;
+                }
+                if (AssignedIdList[0] != "No Records...")
+                {
+                    var filteredDataForAssignTo = (from data in filteredData
+                                                   where
+                                                       (AssignedIdList.Contains(data.AssignToId))
+                                                   select data).ToList();
+                    filteredData = filteredDataForAssignTo;
+                }
+                if (PriorityIdList[0] != "No Records...")
+                {
+                    var filteredDataForPriority = (from data in filteredData
+                                                   where
+                                                       (PriorityIdList.Contains(data.Category))
+                                                   select data).ToList();
+                    filteredData = filteredDataForPriority;
+                }
+                    
 
                 lm.LeadList = filteredData;
             }
@@ -1058,11 +1106,11 @@ namespace LeadManagementSystem_API.Controllers
                 var productname = service.ViewLead(remarkModel.Lead_Id);
                 string deviceId = string.Empty;
                 string ProductName = string.Empty;
-                if (productname.CompanyName == null)
+                if (productname.ClientName == null)
                 {
                     ProductName = "";
                 }
-                else { ProductName = productname.CompanyName; };
+                else { ProductName = productname.ClientName; };
                 string title = $"New Remark added to {ProductName} by {userdetails.UserFullName}.";
                 string body = remarkModel.Remark;
 
@@ -1116,11 +1164,11 @@ namespace LeadManagementSystem_API.Controllers
                 var productname = service.ViewLead(remarkModel.Lead_Id);
                 string deviceId = string.Empty;
                 string ProductName = string.Empty;
-                if (productname.CompanyName == null)
+                if (productname.ClientName == null)
                 {
                     ProductName = "";
                 }
-                else { ProductName = productname.CompanyName; };
+                else { ProductName = productname.ClientName; };
                 string title = $"New Remark added to {ProductName} by {userdetails.UserFullName}.";
                 string body = remarkModel.Remark;
 
@@ -1390,7 +1438,7 @@ namespace LeadManagementSystem_API.Controllers
             {
                 response = service.RemoveTypeOfLead(id);
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
