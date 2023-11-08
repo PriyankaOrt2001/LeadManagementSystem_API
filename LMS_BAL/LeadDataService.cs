@@ -40,6 +40,10 @@ namespace LMS_BAL
         {
             return repository.GetSourceList();
         }
+        public LeadOwnerModel GetOwnerList()
+        {
+            return repository.GetOwnerList();
+        }
         public LeadCategoryModel GetLeadCategoryList()
         {
             return repository.GetLeadCategoryList();
@@ -87,6 +91,10 @@ namespace LMS_BAL
         public ResponseStatusModel AddNewLeadSource(LeadSourceDetails ld)
         {
             return repository.AddNewLeadSource(ld);
+        }
+        public ResponseStatusModel AddNewLeadOwner(LeadOwnerDetails ld)
+        {
+            return repository.AddNewLeadOwner(ld);
         }
         public ResponseStatusModel AddNewEmployee(AssignToDetails ld)
         {
@@ -143,6 +151,10 @@ namespace LMS_BAL
         public LeadSourceDetails ViewLeadSource(int SourceId)
         {
             return repository.ViewLeadSource(SourceId);
+        }
+        public LeadOwnerDetails ViewLeadOwner(int OwnerId)
+        {
+            return repository.ViewLeadOwner(OwnerId);
         }
         public PlanDetails ViewPlanDetails(int PlanId)
         {
@@ -201,6 +213,10 @@ namespace LMS_BAL
         {
             return repository.RemoveLeadSource(SourceId);
         }
+        public ResponseStatusModel RemoveLeadOwner(int OwnerId)
+        {
+            return repository.RemoveLeadOwner(OwnerId);
+        }
         public NotificationDetailsList NotificationDetails(string UserId)
         {
             return repository.NotificationDetails(UserId);
@@ -232,6 +248,10 @@ namespace LMS_BAL
         public ResponseStatusModel UpdateLeadSource(LeadSourceDetails sd)
         {
             return repository.UpdateLeadSource(sd);
+        }
+        public ResponseStatusModel UpdateLeadOwner(LeadOwnerDetails sd)
+        {
+            return repository.UpdateLeadOwner(sd);
         }
         public ResponseStatusModel UpdatePlan(PlanDetails pd)
         {

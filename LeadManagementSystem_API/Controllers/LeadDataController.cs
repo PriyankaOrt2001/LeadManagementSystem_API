@@ -164,13 +164,33 @@ namespace LeadManagementSystem_API.Controllers
             LeadSourceModel lsm = new LeadSourceModel();
             try
             {
-                lsm = service.GetSourceList();
+                 lsm = service.GetSourceList();
             }
             catch (Exception ex)
             {
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetSourceList" },
+                    { "Controller", "LeadDataController" }
+                };
+                lsm.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, lsm);
+        }
+        [HttpGet]
+        [Route("api/v1/GetOwnerList")]
+        public HttpResponseMessage GetOwnerList()
+        {
+            LeadOwnerModel lsm = new LeadOwnerModel();
+            try
+            {
+                lsm = service.GetOwnerList();
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetOwnerList" },
                     { "Controller", "LeadDataController" }
                 };
                 lsm.Response = ExceptionHandler.ExceptionSave(values, ex);
@@ -561,6 +581,26 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "AddNewLeadSource" },
+                    { "Controller", "LeadDataController" }
+                };
+                response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+        [HttpPost]
+        [Route("api/v1/AddNewLeadOwner")]
+        public HttpResponseMessage AddNewLeadOwner(LeadOwnerDetails lcd)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            try
+            {
+                response = service.AddNewLeadOwner(lcd);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "AddNewLeadOwner" },
                     { "Controller", "LeadDataController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
@@ -1430,6 +1470,26 @@ namespace LeadManagementSystem_API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
         [HttpGet]
+        [Route("api/v1/RemoveLeadOwner")]
+        public HttpResponseMessage RemoveLeadOwner(int id)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            try
+            {
+                response = service.RemoveLeadOwner(id);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "RemoveLeadOwner" },
+                    { "Controller", "LeadDataController" }
+                };
+                response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+        [HttpGet]
         [Route("api/v1/RemoveTypeOfLead")]
         public HttpResponseMessage RemoveTypeOfLead(int id)
         {
@@ -1575,7 +1635,26 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, ld);
         }
-
+        [HttpGet]
+        [Route("api/v1/ViewLeadOwner")]
+        public HttpResponseMessage ViewLeadOwner(int OwnerId)
+        {
+            LeadOwnerDetails ld = new LeadOwnerDetails();
+            try
+            {
+                ld = service.ViewLeadOwner(OwnerId);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "ViewLeadOwner" },
+                    { "Controller", "LeadDataController" }
+                };
+                rm.response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, ld);
+        }
         [HttpGet]
         [Route("api/v1/ViewPlanDetails")]
         public HttpResponseMessage ViewPlanDetails(int PlanId)
@@ -1701,7 +1780,26 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
-
+        [HttpPost]
+        [Route("api/v1/UpdateLeadOwner")]
+        public HttpResponseMessage UpdateLeadOwner(LeadOwnerDetails sd)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            try
+            {
+                response = service.UpdateLeadOwner(sd);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "UpdateLeadOwner" },
+                    { "Controller", "LeadDataController" }
+                };
+                response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
         [HttpPost]
         [Route("api/v1/AddNewPlan")]
         public HttpResponseMessage AddNewPlan(PlanDetails pd)

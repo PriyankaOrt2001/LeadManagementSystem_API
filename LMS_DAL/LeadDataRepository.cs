@@ -110,6 +110,20 @@ namespace LMS_DAL
             }
             return lsm;
         }
+        public LeadOwnerModel GetOwnerList()
+        {
+            LeadOwnerModel lsm = new LeadOwnerModel();
+            string sql = "[SP_GetOwnerList]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+
+                }, commandType: CommandType.StoredProcedure);
+                lsm.LeadOwnerDetails = multi.Read<LeadOwnerDetails>().ToList();
+            }
+            return lsm;
+        }
         public LeadCategoryModel GetLeadCategoryList()
         {
             LeadCategoryModel lcm = new LeadCategoryModel();
@@ -256,6 +270,21 @@ namespace LMS_DAL
                 {
                     CreatedBy = ld.CreatedBy,
                     SourceName = ld.Source_Name
+                }, commandType: CommandType.StoredProcedure);
+                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return response;
+        }
+        public ResponseStatusModel AddNewLeadOwner(LeadOwnerDetails ld)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            string sql = "[SP_AddNewLeadOwner]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    CreatedBy = ld.CreatedBy,
+                    OwnerName = ld.Owner_Name
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
@@ -455,6 +484,21 @@ namespace LMS_DAL
                 },
                 commandType: CommandType.StoredProcedure);
                 lm = multi.Read<LeadSourceDetails>().SingleOrDefault();
+            }
+            return lm;
+        }
+        public LeadOwnerDetails ViewLeadOwner(int OwnerId)
+        {
+            LeadOwnerDetails lm = new LeadOwnerDetails();
+            string sql = "[SP_ViewLeadOwner]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    OwnerId = OwnerId
+                },
+                commandType: CommandType.StoredProcedure);
+                lm = multi.Read<LeadOwnerDetails>().SingleOrDefault();
             }
             return lm;
         }
@@ -839,6 +883,20 @@ namespace LMS_DAL
             }
             return response;
         }
+        public ResponseStatusModel RemoveLeadOwner(int OwnerId)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            string sql = "[SP_RemoveLeadOwner]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    OwnerId = OwnerId
+                }, commandType: CommandType.StoredProcedure);
+                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return response;
+        }
         public ResponseStatusModel UpdateCompany(CompanyDetails cmm)
         {
             ResponseStatusModel response = new ResponseStatusModel();
@@ -914,6 +972,22 @@ namespace LMS_DAL
                     CreatedBy = ld.CreatedBy,
                     SourceId = ld.Source_Id,
                     SourceName = ld.Source_Name
+                }, commandType: CommandType.StoredProcedure);
+                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return response;
+        }
+        public ResponseStatusModel UpdateLeadOwner(LeadOwnerDetails ld)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            string sql = "[SP_UpdateLeadOwner]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    CreatedBy = ld.CreatedBy,
+                    OwnerId = ld.Owner_Id,
+                    OwnerName = ld.Owner_Name
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
