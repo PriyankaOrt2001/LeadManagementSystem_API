@@ -96,6 +96,26 @@ namespace LeadManagementSystem_API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, cm);
         }
         [HttpGet]
+        [Route("api/v1/GetClientDetailsList")]
+        public HttpResponseMessage GetClientDetailsList()
+        {
+            ClientModel cm = new ClientModel();
+            try
+            {
+                cm = service.GetClientList();
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetClientDetailsList" },
+                    { "Controller", "LeadDataController" }
+                };
+                cm.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, cm);
+        }
+        [HttpGet]
         [Route("api/v1/GetPlanDetailsList")]
         public HttpResponseMessage GetPlanDetailsList()
         {
@@ -1259,11 +1279,31 @@ namespace LeadManagementSystem_API.Controllers
             {
                 rml = service.GetRemarksList(Lead_Id);
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetRemarksList" },
+                    { "Controller" , "LeadDataController" }
+                };
+                rml.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, rml);
+        }
+        [HttpGet]
+        [Route("api/v1/GetRecentRemarksList")]
+        public HttpResponseMessage GetRecentRemarksList()
+        {
+            RemarkModelList rml = new RemarkModelList();
+            try
+            {
+                rml = service.GetRecentRemarksList();
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetRecentRemarksList" },
                     { "Controller" , "LeadDataController" }
                 };
                 rml.Response = ExceptionHandler.ExceptionSave(values, ex);

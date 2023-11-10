@@ -16,6 +16,10 @@ namespace LMS_BAL
         {
             return repository.GetCompanyList();
         }
+        public ClientModel GetClientList()
+        {
+            return repository.GetClientList();
+        }
         public GetUserListToSendNotificationList GetUserListToSendNotification(string Lead_Id)
         {
             return repository.GetUserListToSendNotification(Lead_Id);
@@ -184,6 +188,10 @@ namespace LMS_BAL
         public RemarkModelList GetRemarksList(string Lead_Id)
         {
             return repository.GetRemarksList(Lead_Id);
+        }
+        public RemarkModelList GetRecentRemarksList()
+        {
+            return repository.GetRecentRemarksList();
         }
         public ResponseStatusModel ChangeLeadStatus(LeadDetails ld)
         {

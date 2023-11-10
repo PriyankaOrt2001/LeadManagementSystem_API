@@ -54,6 +54,20 @@ namespace LMS_DAL
             }
             return cm;
         }
+        public ClientModel GetClientList()
+        {
+            ClientModel cm = new ClientModel();
+            string sql = "[SP_GetClientNameList]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+
+                }, commandType: CommandType.StoredProcedure);
+                cm.ClientList = multi.Read<ClientDetails>().ToList();
+            }
+            return cm;
+        }
         public PlanDetailsModel GetPlanDetailsList()
         {
             PlanDetailsModel pdm = new PlanDetailsModel();
@@ -238,6 +252,7 @@ namespace LMS_DAL
                     AlternateSpokesName = ld.AlternateSpokesName,
                     AlternateSpokesMobile = ld.AlternateSpokesMobile,
                     AlternateEmailAddress = ld.AlternateEmailAddress,
+                    AlternateSpokesAddress = ld.AlternateSpokesAddress,
                     PlanName = ld.PlanName,
                     PlanPrice = ld.PlanPrice,
                     StatusType = ld.StatusType,
@@ -618,7 +633,7 @@ namespace LMS_DAL
         {
             ResponseStatusModel response = new ResponseStatusModel();
             string sql = "[SP_UpdateFirstDraftLead]";
-
+             
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
@@ -675,6 +690,7 @@ namespace LMS_DAL
                     AlternateSpokesName = ld.AlternateSpokesName,
                     AlternateSpokesMobile = ld.AlternateSpokesMobile,
                     AlternateEmailAddress = ld.AlternateEmailAddress,
+                    AlternateSpokesAddress = ld.AlternateSpokesAddress,
                     PlanName = ld.PlanName,
                     PlanPrice = ld.PlanPrice,
                     StatusType = ld.StatusType,
@@ -732,6 +748,7 @@ namespace LMS_DAL
                     CreatedBy = remarkModel.CreatedBy,
                     Remark = remarkModel.Remark,
                     Lead_Id = remarkModel.Lead_Id,
+                    Status=remarkModel.Status,
                     data= dataTable
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
@@ -747,6 +764,20 @@ namespace LMS_DAL
                 var multi = conn.QueryMultiple(sql, new
                 {
                     Lead_Id = Lead_Id
+                }, commandType: CommandType.StoredProcedure);
+                rml.RemarkModels = multi.Read<RemarkModel>().ToList();
+            }
+            return rml;
+        }
+        public RemarkModelList GetRecentRemarksList()
+        {
+            RemarkModelList rml = new RemarkModelList();
+            string sql = "[SP_GetRecentRemarksList]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                   
                 }, commandType: CommandType.StoredProcedure);
                 rml.RemarkModels = multi.Read<RemarkModel>().ToList();
             }
