@@ -16,6 +16,7 @@ namespace LMS_Model
     }
     public class LeadDetails
     {
+        public Int32 Id { get; set; }
         public Int32 RowNum { get; set; }
         public string ProjectTypeId { get; set; } = "";
         public string CreatedDate { get; set; } = "";
@@ -192,5 +193,13 @@ namespace LMS_Model
         public string Priority { get; set; } = "";
         public string CategoryId { get; set; } = "";
         public string AssignedId { get; set; } = "";
+    }
+    public class PagingParam
+    {
+        public string UserId { get; set; }
+        public string SearchValue { get; set; }
+        public int NoOfEntries { get; set; }
+        public int PageIndex { get; set; }
+        public string SortBy { get; set; }
     }
 }

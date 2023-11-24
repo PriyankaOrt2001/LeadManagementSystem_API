@@ -1,5 +1,4 @@
-﻿
-using LeadManagementSystem_API.Security;
+﻿using LeadManagementSystem_API.Security;
 using LeadManagementSystem_API.Services;
 using LMS_BAL;
 using LMS_Model;
@@ -318,6 +317,26 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, lm);
         }
+        [HttpGet]
+        [Route("api/v1/GetLeadDataList")]
+        public HttpResponseMessage GetLeadDataList(PagingParam pagingParam)
+        {
+            LeadModel lm = new LeadModel();
+            try
+            {
+                lm = service.GetLeadDataList(pagingParam);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetLeadDataList" },
+                    { "Controller" , "LeadDataController" }
+                };
+                lm.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, lm);
+        }
         [HttpPost]
         [Route("api/v1/FilterLeadTableDetails")] 
         public HttpResponseMessage FilterLeadTableDetails(FilterBy filterBy)
@@ -375,8 +394,6 @@ namespace LeadManagementSystem_API.Controllers
                                                    select data).ToList();
                     filteredData = filteredDataForPriority;
                 }
-                    
-
                 lm.LeadList = filteredData;
             }
             catch (Exception ex)
@@ -422,11 +439,15 @@ namespace LeadManagementSystem_API.Controllers
                 var userlist = service.GetUserList();
                 List<string> deviceTokens = userlist.GetUserDetails.Select(obj => obj.DeviceId).ToList();
                 var userdetails = service.GetUserDetails(ld.CreatedBy);
-                //var productname = service.ViewLead(ld.Lead_Id);
                 string deviceId = string.Empty;
                 string title = $"{userdetails.UserFullName} added New Lead.";
                 string body = "";
 
+                if (!ld.ScheduleDate.Contains('/')  && ld.ScheduleDate!="")
+                {
+                    DateTime originalDate = DateTime.Parse(ld.ScheduleDate);
+                    ld.ScheduleDate = originalDate.ToString("MM/dd/yyyy");
+                }
                 DataTable myDataTable = new DataTable();
 
                 myDataTable.Columns.Add("RowID", typeof(int));
@@ -490,7 +511,6 @@ namespace LeadManagementSystem_API.Controllers
                         {
                             string filename = imagedata.Filename;
                             FileInfo fi = new FileInfo(filename);
-
                             if (imagedata.Base64.Split(new string[] { "base64," }, StringSplitOptions.None).Length > 1)
                             {
                                 imagedata.Base64 = imagedata.Base64.Split(new string[] { "base64," }, StringSplitOptions.None)[1];
@@ -498,7 +518,7 @@ namespace LeadManagementSystem_API.Controllers
                             byte[] byteArray = Convert.FromBase64String(imagedata.Base64);
                             MemoryStream stream = new MemoryStream(byteArray);
                             string extension = Path.GetExtension(imagedata.Filename).ToLower();
-                            string[] extensions = { ".jpg", ".jpeg", ".png" };
+                            string[] extensions = { ".jpg", ".jpeg", ".png",".svg", ".jfif" };
                             if (string.IsNullOrEmpty(imagedata.Base64) || !extensions.Any(x => x.Equals(Path.GetExtension(imagedata.Filename).ToLower(), StringComparison.OrdinalIgnoreCase)))
                             {
                                 response.msg = "Wrong File Format";
@@ -518,9 +538,8 @@ namespace LeadManagementSystem_API.Controllers
                                 catch (Exception ex)
                                 {
                                     response.msg = "Wrong File Format";
-
                                 }
-                                if ((fileclass == "255216" && extension == ".jpg") || (fileclass == "13780" && extension == ".png"))
+                                if ((fileclass == "255216" && extension == ".jpg") || (fileclass == "13780" && extension == ".png")|| (fileclass == "255216" && extension == ".jpeg")|| (fileclass == "255216" && extension == ".jfif" ) || (fileclass== "6063" && extension==".svg"))
                                 {
                                     var newFilename = Convert.ToString(Guid.NewGuid()).Replace("-", "");
                                     byte[] imageBytes = Convert.FromBase64String(imagedata.Base64);
@@ -541,7 +560,6 @@ namespace LeadManagementSystem_API.Controllers
                                     {
                                         ld.FrontImgFileType = fi.Extension;
                                         ld.BackImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
-
                                     }
                                     else
                                     {
@@ -752,26 +770,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, ld);
         }
-        [HttpPost]
-        [Route("api/v1/UpdateDraftLead")]
-        public HttpResponseMessage UpdateDraftLead(LeadDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            try
-            {
-                response = service.UpdateDraftLead(ld);
-            }
-            catch (Exception ex)
-            {
-                Dictionary<string, object> values = new Dictionary<string, object>()
-                {
-                    { "Action", "UpdateDraftLead" },
-                    { "Controller", "LeadDataController" }
-                };
-                response = ExceptionHandler.ExceptionSave(values, ex);
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, response);
-        }
+        
         [HttpPost]
         [Route("api/v1/UpdateFinalLead")]
         public HttpResponseMessage UpdateFinalLead(LeadDetails ld)
@@ -792,190 +791,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
-        [HttpPost]
-        [Route("api/v1/UpdateFinalDraftLead")]
-        public HttpResponseMessage UpdateFinalDraftLead(LeadDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            try
-            {
-                response = service.UpdateFinalDraftLead(ld);
-            }
-            catch (Exception ex)
-            {
-                Dictionary<string, object> values = new Dictionary<string, object>()
-                {
-                    { "Action", "UpdateFinalDraftLead" },
-                    { "Controller", "LeadDataController" }
-                };
-                response = ExceptionHandler.ExceptionSave(values, ex);
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, response);
-        }
-
-        [HttpPost]
-        [Route("api/v1/UpdateFirstDraftLead")]
-        public HttpResponseMessage UpdateFirstDraftLead(LeadDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            try
-            {
-                CardImagesData cid = new CardImagesData();
-                cid = service.GetImageList(ld.LeadId);
-
-                List<CardImages> CardImages = new List<CardImages>();
-                for (int i = 0; i < 2; i++)
-                {
-                    if (i == 0)
-                    {
-                        CardImages.Add(new CardImages()
-                        {
-                            Base64 = ld.FrontImgBase64,
-                            Filename = ld.FrontImgFileName,
-                            FileType = ld.FrontImgFileType,
-                            ImagePath = ld.FrontImgOfCardPath,
-                            ImgType = "front"
-                        });
-                    }
-                    else if (i == 1)
-                    {
-                        CardImages.Add(new CardImages()
-                        {
-                            Base64 = ld.BackImgBase64,
-                            Filename = ld.BackImgFileName,
-                            FileType = ld.BackImgFileType,
-                            ImagePath = ld.BackImgOfCardPath,
-                            ImgType = "back"
-                        });
-                    }
-                }
-                if (CardImages == null)
-                {
-                    response = service.UpdateFirstDraftLead(ld);
-                }
-                else
-                {
-                    foreach (var imagedata in CardImages)
-                    {
-                        if (!string.IsNullOrEmpty(imagedata.Base64) && !string.IsNullOrEmpty(imagedata.Filename))
-                        {
-                            string filename = imagedata.Filename;
-                            FileInfo fi = new FileInfo(filename);
-                            imagedata.FileType = fi.Extension;
-                            if (imagedata.Base64.Split(new string[] { "base64," }, StringSplitOptions.None).Length > 1)
-                            {
-                                imagedata.Base64 = imagedata.Base64.Split(new string[] { "base64," }, StringSplitOptions.None)[1];
-                            }
-                            byte[] byteArray = Convert.FromBase64String(imagedata.Base64);
-                            MemoryStream stream = new MemoryStream(byteArray);
-                            string extension = Path.GetExtension(imagedata.Filename).ToLower();
-                            string[] extensions = { ".jpg", ".jpeg", ".png" };
-                            if (string.IsNullOrEmpty(imagedata.Base64) || !extensions.Any(x => x.Equals(Path.GetExtension(imagedata.Filename).ToLower(), StringComparison.OrdinalIgnoreCase)))
-                            {
-                                response.msg = "Wrong File Format";
-                            }
-                            else
-                            {
-                                System.IO.BinaryReader r = new System.IO.BinaryReader(stream);
-                                string fileclass = "";
-                                byte buffer1;
-                                try
-                                {
-                                    buffer1 = r.ReadByte();
-                                    fileclass = buffer1.ToString();
-                                    buffer1 = r.ReadByte();
-                                    fileclass += buffer1.ToString();
-                                }
-                                catch (Exception ex)
-                                {
-                                    response.msg = "Wrong File Format";
-
-                                }
-                                if ((fileclass == "255216" && extension == ".jpg") || (fileclass == "13780" && extension == ".png"))
-                                {
-                                    var newFilename = Convert.ToString(Guid.NewGuid()).Replace("-", "");
-                                    byte[] imageBytes = Convert.FromBase64String(imagedata.Base64);
-                                    string ServerPath = System.Configuration.ConfigurationManager.AppSettings["serverUrl"];
-                                    var path = HttpRuntime.AppDomainAppPath;
-                                    var filepath = System.IO.Path.Combine(path, "Documents/" + newFilename + extension);
-                                    if (!Directory.Exists(path + "Documents"))
-                                    {
-                                        Directory.CreateDirectory(path + "Documents");
-                                    }
-                                    System.IO.File.WriteAllBytes(filepath, imageBytes);
-                                    if (imagedata.ImgType == "front")
-                                    {
-                                        ld.FrontImgFileType = fi.Extension;
-                                        ld.FrontImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
-                                    }
-                                    else if (imagedata.ImgType == "back")
-                                    {
-                                        ld.FrontImgFileType = fi.Extension;
-                                        ld.BackImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
-                                    }
-                                    else
-                                    {
-                                        imagedata.FileType = fi.Extension;
-                                        imagedata.ImagePath = ServerPath + "Documents/" + newFilename + extension;
-                                    }
-                                }
-                                else
-                                {
-                                    response.msg = "Wrong File Format";
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (imagedata.ImgType == "front")
-                            {
-                                if (ld.FrontFileStatus == null) { }
-                                else
-                                {
-                                    ld.FrontImgOfCardPath = cid.FrontImgOfCardPath;
-                                    ld.FrontImgFileType = cid.FrontImgFileType;
-                                    ld.FrontImgFileName = cid.FrontImgFileName;
-                                    ld.FrontImgBase64 = cid.FrontImgBase64;
-                                }
-                            }
-                            else if (imagedata.ImgType == "back")
-                            {
-                                if (ld.BackFileStatus == null) { }
-                                else
-                                {
-                                    ld.BackImgBase64 = cid.BackImgBase64;
-                                    ld.BackImgFileName = cid.BackImgFileName;
-                                    ld.BackImgFileType = cid.BackImgFileType;
-                                    ld.BackImgOfCardPath = cid.BackImgOfCardPath;
-                                }
-                            }
-                            else { }
-                        }
-                    }
-                    if (response.msg == null)
-                    {
-                        response = service.UpdateFirstDraftLead(ld);
-                    }
-                    else
-                    {
-                        response.n = 0;
-                        response.RStatus = "Failed";
-                        response.LeadId = "";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Dictionary<string, object> values = new Dictionary<string, object>()
-                {
-                    { "Action", "UpdateFirstDraftLead" },
-                    { "Controller", "LeadDataController" }
-                };
-                response = ExceptionHandler.ExceptionSave(values, ex);
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, response);
-        }
-
+        
         [HttpPost]
         [Route("api/v1/UpdateLead")]
         public HttpResponseMessage UpdateLead(LeadDetails ld)
@@ -985,7 +801,11 @@ namespace LeadManagementSystem_API.Controllers
             {
                 CardImagesData cid = new CardImagesData();
                 cid = service.GetImageList(ld.LeadId);
-
+                if (!ld.ScheduleDate.Contains('/') && ld.ScheduleDate != "")
+                {
+                    DateTime originalDate = DateTime.Parse(ld.ScheduleDate);
+                    ld.ScheduleDate = originalDate.ToString("MM/dd/yyyy");
+                }
                 List<CardImages> CardImages = new List<CardImages>();
                 for (int i = 0; i < 2; i++)
                 {
@@ -1033,7 +853,7 @@ namespace LeadManagementSystem_API.Controllers
                             byte[] byteArray = Convert.FromBase64String(imagedata.Base64);
                             MemoryStream stream = new MemoryStream(byteArray);
                             string extension = Path.GetExtension(imagedata.Filename).ToLower();
-                            string[] extensions = { ".jpg", ".jpeg", ".png" };
+                            string[] extensions = { ".jpg", ".jpeg", ".png", ".svg", ".jfif" };
                             if (string.IsNullOrEmpty(imagedata.Base64) || !extensions.Any(x => x.Equals(Path.GetExtension(imagedata.Filename).ToLower(), StringComparison.OrdinalIgnoreCase)))
                             {
                                 response.msg = "Wrong File Format";
@@ -1055,7 +875,7 @@ namespace LeadManagementSystem_API.Controllers
                                     response.msg = "Wrong File Format";
 
                                 }
-                                if ((fileclass == "255216" && extension == ".jpg") || (fileclass == "13780" && extension == ".png"))
+                                if ((fileclass == "255216" && extension == ".jpg") || (fileclass == "13780" && extension == ".png") || (fileclass == "255216" && extension == ".jpeg") || (fileclass == "255216" && extension == ".jfif") || (fileclass == "6063" && extension == ".svg"))
                                 {
                                     var newFilename = Convert.ToString(Guid.NewGuid()).Replace("-", "");
                                     byte[] imageBytes = Convert.FromBase64String(imagedata.Base64);

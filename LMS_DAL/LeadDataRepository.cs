@@ -180,6 +180,24 @@ namespace LMS_DAL
             }
             return lm;
         }
+        public LeadModel GetLeadDataList(PagingParam pagingParam)
+        {
+            LeadModel lm = new LeadModel();
+            string sql = "[SP_GetLeadDataList]";
+            using(IDbConnection conn=new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    UserId = pagingParam.UserId,
+                    SearchValue = pagingParam.SearchValue,
+                    NoOfEntries = pagingParam.NoOfEntries,
+                    PageIndex = pagingParam.PageIndex,
+                    SortBy = pagingParam.SortBy
+                }, commandType: CommandType.StoredProcedure);
+                lm.LeadList = multi.Read<LeadDetails>().ToList();
+            }
+            return lm;
+        }
         public LeadModel FilterLeadTableDetails(FilterBy filterBy)
         {
             LeadModel lm = new LeadModel();

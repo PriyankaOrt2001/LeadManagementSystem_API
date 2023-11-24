@@ -76,6 +76,10 @@ namespace LMS_BAL
         {
             return repository.GetLeadDetailsList(UserId);
         }
+        public LeadModel GetLeadDataList(PagingParam pagingParam)
+        {
+            return repository.GetLeadDataList(pagingParam);
+        }
         public LeadModel FilterLeadTableDetails(FilterBy filterBy)
         {
             return repository.FilterLeadTableDetails(filterBy);
