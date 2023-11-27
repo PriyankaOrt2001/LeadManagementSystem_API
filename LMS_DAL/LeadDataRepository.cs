@@ -986,6 +986,7 @@ namespace LMS_DAL
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
+                    Category_Id=ld.Category_Id,
                     CreatedBy = ld.CreatedBy,
                     TypeOfLead_ID = ld.TypeOfLead_ID,
                     TypeOfLead = ld.TypeOfLead
