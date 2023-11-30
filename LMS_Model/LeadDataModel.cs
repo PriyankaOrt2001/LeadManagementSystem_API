@@ -202,4 +202,12 @@ namespace LMS_Model
         public int PageIndex { get; set; }
         public string SortBy { get; set; }
     }
+    public class LeadFilterParameters
+    {
+        public string UserId { get; set; }
+        public List<int> CompanyId { get; set; }
+        public List<int> CategoryId { get; set; }
+        public List<string> Priority { get; set; }
+        public List<int> AssigneeId { get; set; }
+    }
 }

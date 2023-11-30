@@ -180,7 +180,7 @@ namespace LMS_DAL
             }
             return lm;
         }
-        public LeadModel GetLeadDataList(PagingParam pagingParam)
+        public LeadModel GetLeadDataList(string UserId,string companyIdString,string categoryIdString,string priorityString,string assigneeIdString)
         {
             LeadModel lm = new LeadModel();
             string sql = "[SP_GetLeadDataList]";
@@ -188,11 +188,11 @@ namespace LMS_DAL
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
-                    UserId = pagingParam.UserId,
-                    SearchValue = pagingParam.SearchValue,
-                    NoOfEntries = pagingParam.NoOfEntries,
-                    PageIndex = pagingParam.PageIndex,
-                    SortBy = pagingParam.SortBy
+                    UserId = UserId,
+                    CompanyId = companyIdString,
+                    CategoryId = categoryIdString,
+                    Priority = priorityString,
+                    AssigneeId = assigneeIdString
                 }, commandType: CommandType.StoredProcedure);
                 lm.LeadList = multi.Read<LeadDetails>().ToList();
             }
@@ -323,16 +323,16 @@ namespace LMS_DAL
             }
             return response;
         }
-        public ResponseStatusModel AddNewEmployee(AssignToDetails ld)
+        public ResponseStatusModel AddNewAssignee(AssignToDetails ld)
         {
             ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_AddNewEmployee]";
+            string sql = "[SP_AddNewAssignee]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
                     CreatedBy = ld.CreatedBy,
-                    Employee_Name = ld.Employee_Name
+                    Assignee_Name = ld.Assignee_Name
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
@@ -490,7 +490,7 @@ namespace LMS_DAL
             }
             return lm;
         }
-        public AssignToDetails ViewAssignToDetails(int Employee_Id)
+        public AssignToDetails ViewAssignToDetails(int Assignee_Id)
         {
             AssignToDetails lm = new AssignToDetails();
             string sql = "[SP_ViewAssignToDetails]";
@@ -498,7 +498,7 @@ namespace LMS_DAL
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
-                    Employee_Id = Employee_Id
+                    Assignee_Id = Assignee_Id
                 },
                 commandType: CommandType.StoredProcedure);
                 lm = multi.Read<AssignToDetails>().SingleOrDefault();
@@ -862,15 +862,15 @@ namespace LMS_DAL
             }
             return response;
         }
-        public ResponseStatusModel RemoveEmployee(int Employee_Id)
+        public ResponseStatusModel RemoveAssignee(int Assignee_Id)
         {
             ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_RemoveEmployee]";
+            string sql = "[SP_RemoveAssignee]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
-                    Employee_Id = Employee_Id
+                    Assignee_Id = Assignee_Id
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
@@ -995,17 +995,17 @@ namespace LMS_DAL
             }
             return response;
         }
-        public ResponseStatusModel UpdateEmployee(AssignToDetails ld)
+        public ResponseStatusModel UpdateAssignee(AssignToDetails ld)
         {
             ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateEmployee]";
+            string sql = "[SP_UpdateAssignee]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
                     CreatedBy = ld.CreatedBy,
-                    Employee_Id = ld.Employee_Id,
-                    Employee_Name = ld.Employee_Name
+                    Assignee_Id = ld.Assignee_Id,
+                    Assignee_Name = ld.Assignee_Name
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }

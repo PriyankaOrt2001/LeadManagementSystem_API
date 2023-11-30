@@ -76,9 +76,9 @@ namespace LMS_BAL
         {
             return repository.GetLeadDetailsList(UserId);
         }
-        public LeadModel GetLeadDataList(PagingParam pagingParam)
+        public LeadModel GetLeadDataList(string UserId,string companyIdString,string categoryIdString,string priorityString,string assigneeIdString)
         {
-            return repository.GetLeadDataList(pagingParam);
+            return repository.GetLeadDataList(UserId,companyIdString, categoryIdString, priorityString, assigneeIdString);
         }
         public LeadModel FilterLeadTableDetails(FilterBy filterBy)
         {
@@ -104,9 +104,9 @@ namespace LMS_BAL
         {
             return repository.AddNewLeadOwner(ld);
         }
-        public ResponseStatusModel AddNewEmployee(AssignToDetails ld)
+        public ResponseStatusModel AddNewAssignee(AssignToDetails ld)
         {
-            return repository.AddNewEmployee(ld);
+            return repository.AddNewAssignee(ld);
         }
         public ResponseStatusModel AddCategory(LeadCategoryDetails lcd)
         {
@@ -152,9 +152,9 @@ namespace LMS_BAL
         {
             return repository.ViewCompanyDetails(Company_Id);
         }
-        public AssignToDetails ViewAssignToDetails(int Employee_Id)
+        public AssignToDetails ViewAssignToDetails(int Assignee_Id)
         {
-            return repository.ViewAssignToDetails(Employee_Id);
+            return repository.ViewAssignToDetails(Assignee_Id);
         }
         public LeadSourceDetails ViewLeadSource(int SourceId)
         {
@@ -209,9 +209,9 @@ namespace LMS_BAL
         {
             return repository.RemoveLead(LeadId, UserId);
         }
-        public ResponseStatusModel RemoveEmployee(int Employee_Id)
+        public ResponseStatusModel RemoveAssignee(int Assignee_Id)
         {
-            return repository.RemoveEmployee(Employee_Id);
+            return repository.RemoveAssignee(Assignee_Id);
         }
         public ResponseStatusModel RemoveCategory(int CategoryId)
         {
@@ -253,9 +253,9 @@ namespace LMS_BAL
         {
             return repository.UpdateTypeOfLead(ld);
         }
-        public ResponseStatusModel UpdateEmployee(AssignToDetails ad)
+        public ResponseStatusModel UpdateAssignee(AssignToDetails ad)
         {
-            return repository.UpdateEmployee(ad);
+            return repository.UpdateAssignee(ad);
         }
         public ResponseStatusModel UpdateLeadSource(LeadSourceDetails sd)
         {

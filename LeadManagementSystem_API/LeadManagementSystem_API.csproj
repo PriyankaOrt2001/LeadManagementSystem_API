@@ -203,12 +203,20 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\LeadDataController.cs" />
+    <Compile Include="Controllers\LeadSourceController.cs" />
     <Compile Include="Controllers\LogInController.cs" />
     <Compile Include="Controllers\MenuItemController.cs" />
+    <Compile Include="Controllers\NotificationDataController.cs" />
+    <Compile Include="Controllers\OwnerController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\RemarkController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\TypeOfLeadController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -272,12 +280,20 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Category\" />
+    <Folder Include="Views\Company\" />
     <Folder Include="Views\Dashboard\" />
+    <Folder Include="Views\Employee\" />
+    <Folder Include="Views\LeadSource\" />
     <Folder Include="Views\LogIn\" />
     <Folder Include="Views\MenuItem\" />
+    <Folder Include="Views\NotificationData\" />
+    <Folder Include="Views\Owner\" />
     <Folder Include="Views\Permission\" />
+    <Folder Include="Views\Remark\" />
     <Folder Include="Views\Role\" />
     <Folder Include="Views\Send_Notification\" />
+    <Folder Include="Views\TypeOfLead\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>

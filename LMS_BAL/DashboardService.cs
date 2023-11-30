@@ -15,9 +15,17 @@ namespace LMS_BAL
         {
             return repository.GetCountsForDashboard();
         }
+        public LeadsCountModel GetLeadsCount()
+        {
+            return repository.GetLeadsCount();
+        }
         public List<LeadDetailsForChart> ShowDatailInLineChart()
         {
             return repository.ShowDatailInLineChart();
+        }
+        public FavoriteLeads GetFavoriteLeads(string UserId)
+        {
+            return repository.GetFavoriteLeads(UserId);
         }
     }
 }

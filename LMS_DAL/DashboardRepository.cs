@@ -26,6 +26,20 @@ namespace LMS_DAL
             }
             return dm;
         }
+        public LeadsCountModel GetLeadsCount()
+        {
+            LeadsCountModel dm = new LeadsCountModel();
+            string sql = "[SP_DashBoardCount]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+
+                }, commandType: CommandType.StoredProcedure);
+                dm = multi.Read<LeadsCountModel>().FirstOrDefault();
+            }
+            return dm;
+        }
         public List<LeadDetailsForChart> ShowDatailInLineChart()
         {
             List<LeadDetailsForChart> dm = new List<LeadDetailsForChart>();
@@ -39,6 +53,20 @@ namespace LMS_DAL
                 dm = multi.Read<LeadDetailsForChart>().ToList();
             }
             return dm;
+        }
+        public FavoriteLeads GetFavoriteLeads(string UserId)
+        {
+            FavoriteLeads lm = new FavoriteLeads();
+            string sql = "[SP_GetFavoriteLeads]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    UserId = UserId
+                }, commandType: CommandType.StoredProcedure);
+                lm.FavoriteLeadsDetails = multi.Read<FavoriteLeadsDetails>().ToList();
+            }
+            return lm;
         }
     }
 }

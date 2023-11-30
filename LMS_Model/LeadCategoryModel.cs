@@ -41,3 +41,4 @@ namespace LMS_Model
         public string TypeOfLead { get; set; }
     }
 }
+ 
