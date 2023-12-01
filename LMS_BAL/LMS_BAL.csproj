@@ -41,16 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryService.cs" />
+    <Compile Include="CompanyService.cs" />
     <Compile Include="DashboardService.cs" />
+    <Compile Include="EmployeeService.cs" />
     <Compile Include="ExceptionHandlerSevice.cs" />
     <Compile Include="LeadDataService.cs" />
+    <Compile Include="LeadSourceService.cs" />
     <Compile Include="LoginService.cs" />
     <Compile Include="LogOutService.cs" />
     <Compile Include="MenuItemService.cs" />
+    <Compile Include="NotificationService.cs" />
+    <Compile Include="OwnerService.cs" />
     <Compile Include="PermissionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemarkService.cs" />
     <Compile Include="RoleService.cs" />
     <Compile Include="TokenService.cs" />
+    <Compile Include="TypeOfLeadService.cs" />
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>

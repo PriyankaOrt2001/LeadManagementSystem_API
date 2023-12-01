@@ -13,7 +13,7 @@ namespace LeadManagementSystem_API.Controllers
 {
     public class CompanyController : ApiController
     {
-        readonly LeadDataService service = new LeadDataService();
+        readonly CompanyService service = new CompanyService();
         ResponseMessageModel rm = new ResponseMessageModel();
 
         [HttpPost]

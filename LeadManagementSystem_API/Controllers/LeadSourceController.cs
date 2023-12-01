@@ -13,7 +13,7 @@ namespace LeadManagementSystem_API.Controllers
 {
     public class LeadSourceController : ApiController
     {
-        readonly LeadDataService service = new LeadDataService();
+        readonly LeadSourceService service = new LeadSourceService();
         ResponseMessageModel rm = new ResponseMessageModel();
         [HttpPost]
         [Route("api/v1/AddLeadSource")]

@@ -13,7 +13,7 @@ namespace LeadManagementSystem_API.Controllers
 {
     public class EmployeeController : ApiController
     {
-        readonly LeadDataService service = new LeadDataService();
+        readonly EmployeeService service = new EmployeeService();
         ResponseMessageModel rm = new ResponseMessageModel();
         [HttpGet]
         [Route("api/v1/GetAssignToList")]

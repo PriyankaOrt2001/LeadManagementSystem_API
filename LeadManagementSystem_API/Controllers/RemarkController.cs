@@ -17,7 +17,7 @@ namespace LeadManagementSystem_API.Controllers
 {
     public class RemarkController : ApiController
     {
-        readonly LeadDataService service = new LeadDataService();
+        readonly RemarkService service = new RemarkService();
         ResponseMessageModel rm = new ResponseMessageModel();
         public void SendNotificationToUser(List<string> deviceTokenes, string text, string title)
         {

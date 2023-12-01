@@ -13,7 +13,7 @@ namespace LeadManagementSystem_API.Controllers
 {
     public class CategoryController : ApiController
     {
-        readonly LeadDataService service = new LeadDataService();
+        readonly CategoryService service = new CategoryService();
         ResponseMessageModel rm = new ResponseMessageModel();
         [HttpPost]
         [Route("api/v1/UpdateCategory")]

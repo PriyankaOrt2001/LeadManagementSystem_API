@@ -13,7 +13,7 @@ namespace LeadManagementSystem_API.Controllers
 {
     public class OwnerController : ApiController
     {
-        readonly LeadDataService service = new LeadDataService();
+        readonly OwnerService service = new OwnerService();
         ResponseMessageModel rm = new ResponseMessageModel();
         [HttpGet]
         [Route("api/v1/GetOwnerList")]

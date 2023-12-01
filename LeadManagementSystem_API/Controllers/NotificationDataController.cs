@@ -13,7 +13,7 @@ namespace LeadManagementSystem_API.Controllers
 {
     public class NotificationDataController : ApiController
     {
-        readonly LeadDataService service = new LeadDataService();
+        readonly NotificationService service = new NotificationService();
         ResponseMessageModel rm = new ResponseMessageModel();
         [HttpGet]
         [Route("api/v1/NotificationDetails")]
