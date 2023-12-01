@@ -10,7 +10,7 @@ namespace LMS_BAL
 {
     public class CompanyService
     {
-        readonly LeadDataRepository repository = new LeadDataRepository();
+        readonly CompanyRepository repository = new CompanyRepository();
         public ResponseStatusModel AddNewComapny(CompanyDetails cd)
         {
             return repository.AddNewComapny(cd);

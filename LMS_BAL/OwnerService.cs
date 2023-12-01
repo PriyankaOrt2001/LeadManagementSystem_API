@@ -10,7 +10,7 @@ namespace LMS_BAL
 {
     public class OwnerService
     {
-        readonly LeadDataRepository repository = new LeadDataRepository();
+        readonly OwnerRepository repository = new OwnerRepository();
         public LeadOwnerModel GetOwnerList()
         {
             return repository.GetOwnerList();

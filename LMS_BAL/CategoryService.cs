@@ -10,7 +10,7 @@ namespace LMS_BAL
 {
     public class CategoryService
     {
-        readonly LeadDataRepository repository = new LeadDataRepository();
+        readonly CategoryRepository repository = new CategoryRepository();
         public ResponseStatusModel UpdateCategory(LeadCategoryDetails cd)
         {
             return repository.UpdateCategory(cd);

@@ -156,7 +156,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, lm);
         }
-        [HttpGet]
+        [HttpPost]
         [Route("api/v1/GetLeadDataList")]
         public HttpResponseMessage GetLeadDataList(LeadFilterParameters leadFilterParameters)
         {

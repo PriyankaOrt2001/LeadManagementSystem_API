@@ -12,19 +12,49 @@ namespace LMS_DAL
 {
     public class LeadDataRepository
     {
-        public GetUserListToSendNotificationList GetUserListToSendNotification(string Lead_Id)
+        public ClientModel GetClientList()
         {
-            GetUserListToSendNotificationList cm = new GetUserListToSendNotificationList();
-            string sql = "[SP_GetUserListToSendNotification]";
+            ClientModel cm = new ClientModel();
+            string sql = "[SP_GetClientNameList]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
-                    Lead_Id= Lead_Id
+
                 }, commandType: CommandType.StoredProcedure);
-                cm.GetUserListToSendNotification = multi.Read<GetUserListToSendNotification>().ToList();
+                cm.ClientList = multi.Read<ClientDetails>().ToList();
             }
             return cm;
+        }
+        public LeadDetails ViewLead(string Lead_Id)
+        {
+            LeadDetails lm = new LeadDetails();
+            string sql = "[SP_ViewLead]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    LeadId = Lead_Id
+                },
+                commandType: CommandType.StoredProcedure);
+                lm = multi.Read<LeadDetails>().SingleOrDefault();
+            }
+            return lm;
+        }
+        public GetUserDetails GetUserDetails(string UserId)
+        {
+            GetUserDetails ud = new GetUserDetails();
+            string sql = "[SP_GetUserDetails]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    UserId = UserId
+                },
+                commandType: CommandType.StoredProcedure);
+                ud = multi.Read<GetUserDetails>().SingleOrDefault();
+            }
+            return ud;
         }
         public GetUserList GetUserList()
         {
@@ -40,31 +70,17 @@ namespace LMS_DAL
             }
             return cm;
         }
-        public CompanyModel GetCompanyList()
+        public GetUserListToSendNotificationList GetUserListToSendNotification(string Lead_Id)
         {
-            CompanyModel cm = new CompanyModel();
-            string sql = "[SP_CompanyDropdown]";
+            GetUserListToSendNotificationList cm = new GetUserListToSendNotificationList();
+            string sql = "[SP_GetUserListToSendNotification]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
-
+                    Lead_Id = Lead_Id
                 }, commandType: CommandType.StoredProcedure);
-                cm.CompanyList = multi.Read<CompanyDetails>().ToList();
-            }
-            return cm;
-        }
-        public ClientModel GetClientList()
-        {
-            ClientModel cm = new ClientModel();
-            string sql = "[SP_GetClientNameList]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-
-                }, commandType: CommandType.StoredProcedure);
-                cm.ClientList = multi.Read<ClientDetails>().ToList();
+                cm.GetUserListToSendNotification = multi.Read<GetUserListToSendNotification>().ToList();
             }
             return cm;
         }
@@ -81,90 +97,6 @@ namespace LMS_DAL
                 pdm.PlanList = multi.Read<PlanDetails>().ToList();
             }
             return pdm;
-        }
-        public AssignToModel GetAssignToList()
-        {
-            AssignToModel am = new AssignToModel();
-            string sql = "[SP_AssignToDropdown]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-
-                }, commandType: CommandType.StoredProcedure);
-                am.AssignToList = multi.Read<AssignToDetails>().ToList();
-            }
-            return am;
-        }
-        public LeadSourceModel GetLeadSourceList()
-        {
-            LeadSourceModel lsm = new LeadSourceModel();
-            string sql = "[SP_GetLeadSourceList]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-
-                }, commandType: CommandType.StoredProcedure);
-                lsm.LeadSourceDetails = multi.Read<LeadSourceDetails>().ToList();
-            }
-            return lsm;
-        }
-        public LeadSourceModel GetSourceList()
-        {
-            LeadSourceModel lsm = new LeadSourceModel();
-            string sql = "[SP_GetSourceList]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-
-                }, commandType: CommandType.StoredProcedure);
-                lsm.LeadSourceDetails = multi.Read<LeadSourceDetails>().ToList();
-            }
-            return lsm;
-        }
-        public LeadOwnerModel GetOwnerList()
-        {
-            LeadOwnerModel lsm = new LeadOwnerModel();
-            string sql = "[SP_GetOwnerList]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-
-                }, commandType: CommandType.StoredProcedure);
-                lsm.LeadOwnerDetails = multi.Read<LeadOwnerDetails>().ToList();
-            }
-            return lsm;
-        }
-        public LeadCategoryModel GetLeadCategoryList()
-        {
-            LeadCategoryModel lcm = new LeadCategoryModel();
-            string sql = "[SP_CategoryDropdown]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-
-                }, commandType: CommandType.StoredProcedure);
-                lcm.LeadCategoryList = multi.Read<LeadCategoryDetails>().ToList();
-            }
-            return lcm;
-        }
-        public TypeOfLeadModel GetLeadTypesList()
-        {
-            TypeOfLeadModel lcm = new TypeOfLeadModel();
-            string sql = "[SP_GetTypeOfLeadList]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-
-                }, commandType: CommandType.StoredProcedure);
-                lcm.TypeOfLeadList = multi.Read<TypeOfLeadDetails>().ToList();
-            }
-            return lcm;
         }
         public LeadModel GetLeadDetailsList(string UserId)
         {
@@ -230,7 +162,6 @@ namespace LMS_DAL
             }
             return cid;
         }
-
         public LeadModel GetRecentLeadDetailsList()
         {
             LeadModel lm = new LeadModel();
@@ -293,66 +224,6 @@ namespace LMS_DAL
             }
             return response;
         }
-        public ResponseStatusModel AddNewLeadSource(LeadSourceDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_AddNewLeadSource]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = ld.CreatedBy,
-                    SourceName = ld.Source_Name
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel AddNewLeadOwner(LeadOwnerDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_AddNewLeadOwner]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = ld.CreatedBy,
-                    OwnerName = ld.Owner_Name
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel AddNewAssignee(AssignToDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_AddNewAssignee]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = ld.CreatedBy,
-                    Assignee_Name = ld.Assignee_Name
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel AddCategory(LeadCategoryDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_AddNewCategory]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = ld.CreatedBy,
-                    Category_Name = ld.Category_Name
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
         public ResponseStatusModel AddNewPlan(PlanDetails pd)
         {
             ResponseStatusModel response = new ResponseStatusModel();
@@ -368,52 +239,6 @@ namespace LMS_DAL
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
             return response;
-        }
-        public ResponseStatusModel AddNewComapny(CompanyDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_AddNewCompany]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = ld.CreatedBy,
-                    Company_Name = ld.Company_Name
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel AddTypeOfLead(TypeOfLeadDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_AddNewTypeOfLead]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = ld.CreatedBy,
-                    Category_Id = ld.Category_Id,
-                    TypeOfLead = ld.TypeOfLead
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public LeadDetails ViewLead(string Lead_Id)
-        {
-            LeadDetails lm = new LeadDetails();
-            string sql = "[SP_ViewLead]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    LeadId = Lead_Id
-                },
-                commandType: CommandType.StoredProcedure);
-                lm = multi.Read<LeadDetails>().SingleOrDefault();
-            }
-            return lm;
         }
         public LeadDetails ViewLeadDetails(string Lead_Id)
         {
@@ -445,96 +270,6 @@ namespace LMS_DAL
             }
             return lm;
         }
-        public LeadCategoryDetails ViewCategoryDetails(int Category_Id)
-        {
-            LeadCategoryDetails lm = new LeadCategoryDetails();
-            string sql = "[SP_ViewCategoryDetails]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Category_Id = Category_Id
-                },
-                commandType: CommandType.StoredProcedure);
-                lm = multi.Read<LeadCategoryDetails>().SingleOrDefault();
-            }
-            return lm;
-        }
-        public TypeOfLeadDetails ViewTypeOfLeadDetails(int TypeOfLead_ID)
-        {
-            TypeOfLeadDetails lm = new TypeOfLeadDetails();
-            string sql = "[SP_ViewTypeOfLeadDetails]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    TypeOfLead_ID = TypeOfLead_ID
-                },
-                commandType: CommandType.StoredProcedure);
-                lm = multi.Read<TypeOfLeadDetails>().SingleOrDefault();
-            }
-            return lm;
-        }
-        public CompanyDetails ViewCompanyDetails(int Company_Id)
-        {
-            CompanyDetails lm = new CompanyDetails();
-            string sql = "[SP_ViewCompanyDetails]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Company_Id = Company_Id
-                },
-                commandType: CommandType.StoredProcedure);
-                lm = multi.Read<CompanyDetails>().SingleOrDefault();
-            }
-            return lm;
-        }
-        public AssignToDetails ViewAssignToDetails(int Assignee_Id)
-        {
-            AssignToDetails lm = new AssignToDetails();
-            string sql = "[SP_ViewAssignToDetails]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Assignee_Id = Assignee_Id
-                },
-                commandType: CommandType.StoredProcedure);
-                lm = multi.Read<AssignToDetails>().SingleOrDefault();
-            }
-            return lm;
-        }
-        public LeadSourceDetails ViewLeadSource(int SourceId)
-        {
-            LeadSourceDetails lm = new LeadSourceDetails();
-            string sql = "[SP_ViewLeadSource]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    SourceId = SourceId
-                },
-                commandType: CommandType.StoredProcedure);
-                lm = multi.Read<LeadSourceDetails>().SingleOrDefault();
-            }
-            return lm;
-        }
-        public LeadOwnerDetails ViewLeadOwner(int OwnerId)
-        {
-            LeadOwnerDetails lm = new LeadOwnerDetails();
-            string sql = "[SP_ViewLeadOwner]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    OwnerId = OwnerId
-                },
-                commandType: CommandType.StoredProcedure);
-                lm = multi.Read<LeadOwnerDetails>().SingleOrDefault();
-            }
-            return lm;
-        }
         public PlanDetails GetPlanPrice(int PlanId)
         {
             PlanDetails lm = new PlanDetails();
@@ -549,51 +284,6 @@ namespace LMS_DAL
                 lm = multi.Read<PlanDetails>().SingleOrDefault();
             }
             return lm;
-        }
-        public GetRemarkCount GetRemarkCount(string Lead_Id)
-        {
-            GetRemarkCount rc = new GetRemarkCount();
-            string sql = "[SP_GetRemarkCount]";
-            using(IDbConnection conn =new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Lead_Id = Lead_Id
-                },
-                commandType: CommandType.StoredProcedure);
-                rc = multi.Read<GetRemarkCount>().SingleOrDefault();
-            }
-            return rc;
-        }
-        public GetCountOfUnSeenNotification GetCountOfUnSeenNotification(string UserId)
-        {
-            GetCountOfUnSeenNotification rc = new GetCountOfUnSeenNotification();
-            string sql = "[SP_GetCountOfUnSeenNotification]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    UserId = UserId
-                },
-                commandType: CommandType.StoredProcedure);
-                rc = multi.Read<GetCountOfUnSeenNotification>().SingleOrDefault();
-            }
-            return rc;
-        }
-        public TypeOfLeadModel GetTypeOfLeadList(int Category_Id)
-        {
-            TypeOfLeadModel tolm = new TypeOfLeadModel();
-            string sql = "[SP_TypeOfLeadDropdown]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Category_Id = Category_Id
-                },
-                commandType: CommandType.StoredProcedure);
-                tolm.TypeOfLeadList = multi.Read<TypeOfLeadDetails>().ToList();
-            }
-            return tolm;
         }
         public ResponseStatusModel UpdateFinalLead(LeadDetails ld)
         {
@@ -754,53 +444,6 @@ namespace LMS_DAL
             }
             return response;
         }
-
-        public ResponseStatusModel AddRemark(RemarkModel remarkModel, DataTable dataTable)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_AddRemark]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = remarkModel.CreatedBy,
-                    Remark = remarkModel.Remark,
-                    Lead_Id = remarkModel.Lead_Id,
-                    Status=remarkModel.Status,
-                    data= dataTable
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public RemarkModelList GetRemarksList(string Lead_Id)
-        {
-            RemarkModelList rml = new RemarkModelList();
-            string sql = "[SP_GetRemarksList]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Lead_Id = Lead_Id
-                }, commandType: CommandType.StoredProcedure);
-                rml.RemarkModels = multi.Read<RemarkModel>().ToList();
-            }
-            return rml;
-        }
-        public RemarkModelList GetRecentRemarksList()
-        {
-            RemarkModelList rml = new RemarkModelList();
-            string sql = "[SP_GetRecentRemarksList]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                   
-                }, commandType: CommandType.StoredProcedure);
-                rml.RemarkModels = multi.Read<RemarkModel>().ToList();
-            }
-            return rml;
-        }
         public ResponseStatusModel ChangeLeadStatus(LeadDetails ld)
         {
             ResponseStatusModel response = new ResponseStatusModel();
@@ -832,21 +475,7 @@ namespace LMS_DAL
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
             return response;
-        }
-        public ResponseStatusModel RemoveCompany(int Company_Id)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_RemoveCompany]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Company_Id = Company_Id
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
+        }        
         public ResponseStatusModel RemoveLead(string LeadId,string UserId)
         {
             ResponseStatusModel response = new ResponseStatusModel();
@@ -862,34 +491,6 @@ namespace LMS_DAL
             }
             return response;
         }
-        public ResponseStatusModel RemoveAssignee(int Assignee_Id)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_RemoveAssignee]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Assignee_Id = Assignee_Id
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel RemoveCategory(int Category_Id)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_RemoveCategory]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Category_Id = Category_Id
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
         public ResponseStatusModel RemovePlan(int Plan_Id)
         {
             ResponseStatusModel response = new ResponseStatusModel();
@@ -899,145 +500,6 @@ namespace LMS_DAL
                 var multi = conn.QueryMultiple(sql, new
                 {
                     Plan_Id = Plan_Id
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel RemoveTypeOfLead(int TypeOfLeadId)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_RemoveTypeOfLead]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    TypeOfLead_ID = TypeOfLeadId
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel RemoveLeadSource(int SourceId)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_RemoveLeadSource]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    SourceId = SourceId
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel RemoveLeadOwner(int OwnerId)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_RemoveLeadOwner]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    OwnerId = OwnerId
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel UpdateCompany(CompanyDetails cmm)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateCompany]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = cmm.CreatedBy,
-                    Company_ID = cmm.Company_Id,
-                    Company_Name = cmm.Company_Name
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel UpdateCategory(LeadCategoryDetails cd)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateCategory]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = cd.CreatedBy,
-                    Category_Id = cd.Category_Id,
-                    Category_Name = cd.Category_Name
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel UpdateTypeOfLead(TypeOfLeadDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateTypeOfLead]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    Category_Id=ld.Category_Id,
-                    CreatedBy = ld.CreatedBy,
-                    TypeOfLead_ID = ld.TypeOfLead_ID,
-                    TypeOfLead = ld.TypeOfLead
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel UpdateAssignee(AssignToDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateAssignee]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = ld.CreatedBy,
-                    Assignee_Id = ld.Assignee_Id,
-                    Assignee_Name = ld.Assignee_Name
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel UpdateLeadSource(LeadSourceDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateLeadSource]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = ld.CreatedBy,
-                    SourceId = ld.Source_Id,
-                    SourceName = ld.Source_Name
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel UpdateLeadOwner(LeadOwnerDetails ld)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateLeadOwner]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    CreatedBy = ld.CreatedBy,
-                    OwnerId = ld.Owner_Id,
-                    OwnerName = ld.Owner_Name
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
@@ -1074,98 +536,6 @@ namespace LMS_DAL
                 lm = multi.Read<PlanDetails>().SingleOrDefault();
             }
             return lm;
-        }
-        public NotificationDetailsList NotificationDetails(string UserId)
-        {
-            NotificationDetailsList lm = new NotificationDetailsList();
-            string sql = "[SP_NotificationDetails]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    UserId = UserId
-                },
-                commandType: CommandType.StoredProcedure);
-                lm.NotificationDetails = multi.Read<NotificationDetails>().ToList();
-            }
-            return lm;
-        }
-        public NotificationDetailsList RecentNotificationDetails(string UserId)
-        {
-            NotificationDetailsList lm = new NotificationDetailsList();
-            string sql = "[SP_RecentNotificationDetails]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    UserId = UserId
-                },
-                commandType: CommandType.StoredProcedure);
-                lm.NotificationDetails = multi.Read<NotificationDetails>().ToList();
-            }
-            return lm;
-        }
-        public GetLeadUpdatedByOwnerDetailsList GetLeadUpdatedByOwnerDetails(string LeadId)
-        {
-            GetLeadUpdatedByOwnerDetailsList od = new GetLeadUpdatedByOwnerDetailsList();
-            string sql = "[SP_GetLeadUpdatedByOwnerDetails]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    LeadId= LeadId
-                }, commandType: CommandType.StoredProcedure);
-                od.GetLeadUpdatedByOwnerDetails = multi.Read<GetLeadUpdatedByOwnerDetails>().ToList();
-            }
-            return od;
-        }
-        public GetUserDetails GetUserDetails(string UserId)
-        {
-            GetUserDetails ud = new GetUserDetails();
-            string sql = "[SP_GetUserDetails]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    UserId = UserId
-                },
-                commandType: CommandType.StoredProcedure);
-                ud = multi.Read<GetUserDetails>().SingleOrDefault();
-            }
-            return ud;
-        }
-        public ResponseStatusModel UpdateRemark(RemarkModel rm)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateRemark]";
-
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    LeadId = rm.Lead_Id,
-                    CreatedBy = rm.CreatedBy,
-                    Remark_Id = rm.Remark_Id,
-                    Remark = rm.Remark
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel UpdateNotificationSeenStatus(string UserId)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateNotificationSeenStatus]";
-
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    UserId = UserId
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
         }
     }
 }

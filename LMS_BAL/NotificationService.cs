@@ -10,7 +10,7 @@ namespace LMS_BAL
 {
     public class NotificationService
     {
-        readonly LeadDataRepository repository = new LeadDataRepository();
+        readonly NotificationRepository repository = new NotificationRepository();
         public NotificationDetailsList NotificationDetails(string UserId)
         {
             return repository.NotificationDetails(UserId);

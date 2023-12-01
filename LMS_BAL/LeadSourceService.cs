@@ -10,7 +10,7 @@ namespace LMS_BAL
 {
     public class LeadSourceService
     {
-        readonly LeadDataRepository repository = new LeadDataRepository();
+        readonly LeadSourceRepository repository = new LeadSourceRepository();
         public ResponseStatusModel AddNewLeadSource(LeadSourceDetails ld)
         {
             return repository.AddNewLeadSource(ld);

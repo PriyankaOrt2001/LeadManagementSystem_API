@@ -10,7 +10,7 @@ namespace LMS_BAL
 {
     public class EmployeeService
     {
-        readonly LeadDataRepository repository = new LeadDataRepository();
+        readonly EmployeeRepository repository = new EmployeeRepository();
         public AssignToModel GetAssignToList()
         {
             return repository.GetAssignToList();

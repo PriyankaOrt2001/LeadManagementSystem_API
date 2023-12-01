@@ -11,7 +11,7 @@ namespace LMS_BAL
 {
     public class RemarkService
     {
-        readonly LeadDataRepository repository = new LeadDataRepository();
+        readonly RemarkRepository repository = new RemarkRepository();
         public GetRemarkCount GetRemarkCount(string Lead_Id)
         {
             return repository.GetRemarkCount(Lead_Id);

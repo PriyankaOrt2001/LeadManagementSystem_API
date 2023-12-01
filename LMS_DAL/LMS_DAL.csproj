@@ -45,17 +45,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryRepository.cs" />
+    <Compile Include="CompanyRepository.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="DashboardRepository.cs" />
+    <Compile Include="EmployeeRepository.cs" />
     <Compile Include="ExceptionHandlerRepository.cs" />
     <Compile Include="LeadDataRepository.cs" />
+    <Compile Include="LeadSourceRepository.cs" />
     <Compile Include="LoginRepository.cs" />
     <Compile Include="LogOutRepository.cs" />
     <Compile Include="MenuItemRepository.cs" />
+    <Compile Include="NotificationRepository.cs" />
+    <Compile Include="OwnerRepository.cs" />
     <Compile Include="PermissionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemarkRepository.cs" />
     <Compile Include="RoleRepository.cs" />
     <Compile Include="TokenRepository.cs" />
+    <Compile Include="TypeOfLeadRepository.cs" />
     <Compile Include="UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>

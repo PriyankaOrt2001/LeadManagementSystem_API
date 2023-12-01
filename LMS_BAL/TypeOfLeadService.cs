@@ -10,7 +10,7 @@ namespace LMS_BAL
 {
     public class TypeOfLeadService
     {
-        readonly LeadDataRepository repository = new LeadDataRepository();
+        readonly TypeOfLeadRepository repository = new TypeOfLeadRepository();
         public TypeOfLeadModel GetTypeOfLeadList(int Category_Id)
         {
             return repository.GetTypeOfLeadList(Category_Id);
