@@ -20,10 +20,11 @@ namespace LeadManagementSystem_API.Controllers
         [Route("api/v1/GetCountsForDashboard")]
         public HttpResponseMessage GetCountsForDashboard()
         {
-            LeadsCountModel dm = new LeadsCountModel();
+            DashboardModel dm = new DashboardModel();
             try
             {
                 dm = service.GetLeadsCount();
+                dm.LeadList = service.ShowDatailInLineChart();
             }
             catch (Exception ex)
             {

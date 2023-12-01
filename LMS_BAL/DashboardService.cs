@@ -15,7 +15,7 @@ namespace LMS_BAL
         {
             return repository.GetCountsForDashboard();
         }
-        public LeadsCountModel GetLeadsCount()
+        public DashboardModel GetLeadsCount()
         {
             return repository.GetLeadsCount();
         }

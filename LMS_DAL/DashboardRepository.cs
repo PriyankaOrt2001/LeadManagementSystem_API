@@ -26,9 +26,9 @@ namespace LMS_DAL
             }
             return dm;
         }
-        public LeadsCountModel GetLeadsCount()
+        public DashboardModel GetLeadsCount()
         {
-            LeadsCountModel dm = new LeadsCountModel();
+            DashboardModel dm = new DashboardModel();
             string sql = "[SP_DashBoardCount]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
@@ -36,7 +36,7 @@ namespace LMS_DAL
                 {
 
                 }, commandType: CommandType.StoredProcedure);
-                dm = multi.Read<LeadsCountModel>().FirstOrDefault();
+                dm = multi.Read<DashboardModel>().FirstOrDefault();
             }
             return dm;
         }
