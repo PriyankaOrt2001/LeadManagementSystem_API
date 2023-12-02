@@ -351,37 +351,30 @@ namespace LeadManagementSystem_API.Controllers
                                 {
                                     response.msg = "Wrong File Format";
                                 }
-                                if ((fileclass == "255216" && extension == ".jpg") || (fileclass == "13780" && extension == ".png")|| (fileclass == "255216" && extension == ".jpeg")|| (fileclass == "255216" && extension == ".jfif" ) || (fileclass== "6063" && extension==".svg"))
+                                var newFilename = Convert.ToString(Guid.NewGuid()).Replace("-", "");
+                                byte[] imageBytes = Convert.FromBase64String(imagedata.Base64);
+                                string ServerPath = System.Configuration.ConfigurationManager.AppSettings["serverUrl"];
+                                var path = HttpRuntime.AppDomainAppPath;
+                                var filepath = System.IO.Path.Combine(path, "Documents/" + newFilename + extension);
+                                if (!Directory.Exists(path + "Documents"))
                                 {
-                                    var newFilename = Convert.ToString(Guid.NewGuid()).Replace("-", "");
-                                    byte[] imageBytes = Convert.FromBase64String(imagedata.Base64);
-                                    string ServerPath = System.Configuration.ConfigurationManager.AppSettings["serverUrl"];
-                                    var path = HttpRuntime.AppDomainAppPath;
-                                    var filepath = System.IO.Path.Combine(path, "Documents/" + newFilename + extension);
-                                    if (!Directory.Exists(path + "Documents"))
-                                    {
-                                        Directory.CreateDirectory(path + "Documents");
-                                    }
-                                    System.IO.File.WriteAllBytes(filepath, imageBytes);
-                                    if (imagedata.ImgType == "front")
-                                    {
-                                        ld.FrontImgFileType = fi.Extension;
-                                        ld.FrontImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
-                                    }
-                                    else if (imagedata.ImgType == "back")
-                                    {
-                                        ld.FrontImgFileType = fi.Extension;
-                                        ld.BackImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
-                                    }
-                                    else
-                                    {
-                                        imagedata.FileType = fi.Extension;
-                                        imagedata.ImagePath = ServerPath + "Documents/" + newFilename + extension;
-                                    }
+                                    Directory.CreateDirectory(path + "Documents");
+                                }
+                                System.IO.File.WriteAllBytes(filepath, imageBytes);
+                                if (imagedata.ImgType == "front")
+                                {
+                                    ld.FrontImgFileType = fi.Extension;
+                                    ld.FrontImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
+                                }
+                                else if (imagedata.ImgType == "back")
+                                {
+                                    ld.FrontImgFileType = fi.Extension;
+                                    ld.BackImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
                                 }
                                 else
                                 {
-                                    response.msg = "Wrong File Format";
+                                    imagedata.FileType = fi.Extension;
+                                    imagedata.ImagePath = ServerPath + "Documents/" + newFilename + extension;
                                 }
                             }
                         }
@@ -566,37 +559,30 @@ namespace LeadManagementSystem_API.Controllers
                                     response.msg = "Wrong File Format";
 
                                 }
-                                if ((fileclass == "255216" && extension == ".jpg") || (fileclass == "13780" && extension == ".png") || (fileclass == "255216" && extension == ".jpeg") || (fileclass == "255216" && extension == ".jfif") || (fileclass == "6063" && extension == ".svg"))
+                                var newFilename = Convert.ToString(Guid.NewGuid()).Replace("-", "");
+                                byte[] imageBytes = Convert.FromBase64String(imagedata.Base64);
+                                string ServerPath = System.Configuration.ConfigurationManager.AppSettings["serverUrl"];
+                                var path = HttpRuntime.AppDomainAppPath;
+                                var filepath = System.IO.Path.Combine(path, "Documents/" + newFilename + extension);
+                                if (!Directory.Exists(path + "Documents"))
                                 {
-                                    var newFilename = Convert.ToString(Guid.NewGuid()).Replace("-", "");
-                                    byte[] imageBytes = Convert.FromBase64String(imagedata.Base64);
-                                    string ServerPath = System.Configuration.ConfigurationManager.AppSettings["serverUrl"];
-                                    var path = HttpRuntime.AppDomainAppPath;
-                                    var filepath = System.IO.Path.Combine(path, "Documents/" + newFilename + extension);
-                                    if (!Directory.Exists(path + "Documents"))
-                                    {
-                                        Directory.CreateDirectory(path + "Documents");
-                                    }
-                                    System.IO.File.WriteAllBytes(filepath, imageBytes);
-                                    if (imagedata.ImgType == "front")
-                                    {
-                                        ld.FrontImgFileType = fi.Extension;
-                                        ld.FrontImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
-                                    }
-                                    else if (imagedata.ImgType == "back")
-                                    {
-                                        ld.FrontImgFileType = fi.Extension;
-                                        ld.BackImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
-                                    }
-                                    else
-                                    {
-                                        imagedata.FileType = fi.Extension;
-                                        imagedata.ImagePath = ServerPath + "Documents/" + newFilename + extension;
-                                    }
+                                    Directory.CreateDirectory(path + "Documents");
+                                }
+                                System.IO.File.WriteAllBytes(filepath, imageBytes);
+                                if (imagedata.ImgType == "front")
+                                {
+                                    ld.FrontImgFileType = fi.Extension;
+                                    ld.FrontImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
+                                }
+                                else if (imagedata.ImgType == "back")
+                                {
+                                    ld.FrontImgFileType = fi.Extension;
+                                    ld.BackImgOfCardPath = ServerPath + "Documents/" + newFilename + extension;
                                 }
                                 else
                                 {
-                                    response.msg = "Wrong File Format";
+                                    imagedata.FileType = fi.Extension;
+                                    imagedata.ImagePath = ServerPath + "Documents/" + newFilename + extension;
                                 }
                             }
                         }
