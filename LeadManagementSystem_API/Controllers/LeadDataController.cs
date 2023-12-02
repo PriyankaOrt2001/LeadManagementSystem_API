@@ -167,7 +167,12 @@ namespace LeadManagementSystem_API.Controllers
                 string categoryIdString = string.Join(",", leadFilterParameters.CategoryId);
                 string priorityString = string.Join(",", leadFilterParameters.Priority.Select(c => $"'{c}'"));
                 string assigneeIdString = string.Join(",", leadFilterParameters.AssigneeId);
-                lm = service.GetLeadDataList(leadFilterParameters.UserId,companyIdString, categoryIdString, priorityString, assigneeIdString);
+                string searchValueString = "";
+                if (leadFilterParameters.SearchValue.Length >= 3)
+                {
+                    searchValueString = $"'{leadFilterParameters.SearchValue}'";
+                }
+                lm = service.GetLeadDataList(leadFilterParameters.UserId,companyIdString, categoryIdString, priorityString, assigneeIdString, searchValueString);
             }
             catch (Exception ex)
             {

@@ -37,9 +37,9 @@ namespace LMS_BAL
         {
             return repository.GetLeadDetailsList(UserId);
         }
-        public LeadModel GetLeadDataList(string UserId,string companyIdString,string categoryIdString,string priorityString,string assigneeIdString)
+        public LeadModel GetLeadDataList(string UserId,string companyIdString,string categoryIdString,string priorityString,string assigneeIdString,string searchValueString)
         {
-            return repository.GetLeadDataList(UserId,companyIdString, categoryIdString, priorityString, assigneeIdString);
+            return repository.GetLeadDataList(UserId,companyIdString, categoryIdString, priorityString, assigneeIdString, searchValueString);
         }
         public LeadModel FilterLeadTableDetails(FilterBy filterBy)
         {

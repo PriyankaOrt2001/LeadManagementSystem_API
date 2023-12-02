@@ -209,5 +209,6 @@ namespace LMS_Model
         public List<int> CategoryId { get; set; }
         public List<string> Priority { get; set; }
         public List<int> AssigneeId { get; set; }
+        public string SearchValue { get; set; }
     }
 }

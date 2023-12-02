@@ -112,7 +112,7 @@ namespace LMS_DAL
             }
             return lm;
         }
-        public LeadModel GetLeadDataList(string UserId,string companyIdString,string categoryIdString,string priorityString,string assigneeIdString)
+        public LeadModel GetLeadDataList(string UserId,string companyIdString,string categoryIdString,string priorityString,string assigneeIdString,string searchValueString)
         {
             LeadModel lm = new LeadModel();
             string sql = "[SP_GetLeadDataList]";
@@ -124,7 +124,8 @@ namespace LMS_DAL
                     CompanyId = companyIdString,
                     CategoryId = categoryIdString,
                     Priority = priorityString,
-                    AssigneeId = assigneeIdString
+                    AssigneeId = assigneeIdString,
+                    SearchValue = searchValueString
                 }, commandType: CommandType.StoredProcedure);
                 lm.LeadList = multi.Read<LeadDetails>().ToList();
             }
