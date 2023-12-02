@@ -78,5 +78,25 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, lm);
         }
+        [HttpGet]
+        [Route("api/v1/GetWeekNumbers")]
+        public HttpResponseMessage GetWeekNumbers()
+        {
+            NumbersOfWeek now = new NumbersOfWeek();
+            try
+            {
+                now = service.GetWeekNumbers();
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "NumbersOfWeek" },
+                    { "Controller", "DashboardController" }
+                };
+                rm.response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, now);
+        }
     }
 }

@@ -65,8 +65,24 @@ namespace LMS_DAL
                     UserId = UserId
                 }, commandType: CommandType.StoredProcedure);
                 lm.FavoriteLeadsDetails = multi.Read<FavoriteLeadsDetails>().ToList();
+                lm.Response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
             return lm;
+        }
+        public NumbersOfWeek GetWeekNumbers()
+        {
+            NumbersOfWeek now = new NumbersOfWeek();
+            string sql = "[SP_GetWeekNumbers]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                   
+                }, commandType: CommandType.StoredProcedure);
+                now.NumberOfWeek = multi.Read<NumberOfWeek>().ToList();
+                now.Response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return now;
         }
     }
 }

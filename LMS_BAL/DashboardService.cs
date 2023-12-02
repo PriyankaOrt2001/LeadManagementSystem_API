@@ -27,5 +27,9 @@ namespace LMS_BAL
         {
             return repository.GetFavoriteLeads(UserId);
         }
+        public NumbersOfWeek GetWeekNumbers()
+        {
+            return repository.GetWeekNumbers();
+        }
     }
 }

@@ -21,7 +21,8 @@ namespace LMS_DAL
                 var multi = conn.QueryMultiple(sql, new
                 {
                     CreatedBy = ld.CreatedBy,
-                    Company_Name = ld.Company_Name
+                    Company_Name = ld.Company_Name,
+                    Short_Company_Name=ld.Short_Company_Name
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
@@ -66,7 +67,8 @@ namespace LMS_DAL
                 {
                     CreatedBy = cmm.CreatedBy,
                     Company_ID = cmm.Company_Id,
-                    Company_Name = cmm.Company_Name
+                    Company_Name = cmm.Company_Name,
+                    Short_Company_Name=cmm.Short_Company_Name
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }

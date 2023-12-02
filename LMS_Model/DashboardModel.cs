@@ -161,4 +161,17 @@ namespace LMS_Model
         public int IsFav { get; set; }
         public string ShortCompanyName { get; set; } = "";
     }
+    public class NumbersOfWeek
+    {
+        public List<NumberOfWeek> NumberOfWeek
+        {
+            get; set;
+        }
+        public ResponseStatusModel Response { get; set; }
+    }
+    public class NumberOfWeek
+    {
+        public string Week { get; set; }
+        public int WeekNumber { get; set; }
+    }
 }
