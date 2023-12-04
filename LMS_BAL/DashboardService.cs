@@ -31,5 +31,13 @@ namespace LMS_BAL
         {
             return repository.GetWeekNumbers();
         }
+        public LeadDataByWeek GetLeadDataByWeek(int WeekNumber)
+        {
+            return repository.GetLeadDataByWeek(WeekNumber);
+        }
+        public LeadCountsWithAssignee GetLeadCountsWithAssignee()
+        {
+            return repository.GetLeadCountsWithAssignee();
+        }
     }
 }

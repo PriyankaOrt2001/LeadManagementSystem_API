@@ -174,4 +174,38 @@ namespace LMS_Model
         public string Week { get; set; }
         public int WeekNumber { get; set; }
     }
+    public class LeadDataByWeek
+    {
+        public List<LeadDetailsByWeek> LeadDetailsByWeek
+        {
+            get; set;
+        }
+        public ResponseStatusModel Response { get; set; }
+    }
+    public class LeadDetailsByWeek
+    {
+        public string DateOfWeek { get; set; }
+        public int HoldLeadsCount { get; set; }
+        public int ColdLeadsCount { get; set; }
+        public int WarmLeadsCount { get; set; }
+    }
+    public class LeadCountsWithAssignee
+    {
+        public List<LeadCounts> LeadCounts
+        {
+            get; set;
+        }
+        public ResponseStatusModel Response { get; set; }
+    }
+    public class LeadCounts
+    {
+        public string AssigneeName { get; set; }
+        public string AssigneeId { get; set; }
+        public int TotalAllocatedLeads { get; set; }
+        public int ClosedLeadsCount { get; set; }
+        public int GhostLeadsCount { get; set; }
+        public int ConvertedLeadsCount { get; set; }
+        public int HoldLeadsCount { get; set; }
+        public int OpenLeadsCount { get; set; }
+    }
 }

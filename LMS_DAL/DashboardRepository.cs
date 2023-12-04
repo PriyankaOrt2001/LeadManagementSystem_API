@@ -84,5 +84,35 @@ namespace LMS_DAL
             }
             return now;
         }
+        public LeadDataByWeek GetLeadDataByWeek(int WeekNumber)
+        {
+            LeadDataByWeek ldb = new LeadDataByWeek();
+            string storedProcedure = "[SP_GetLeadDataByDate]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(storedProcedure, new
+                {
+                    WeekNumber= WeekNumber
+                }, commandType: CommandType.StoredProcedure);
+                ldb.LeadDetailsByWeek = multi.Read<LeadDetailsByWeek>().ToList();
+                ldb.Response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return ldb;
+        }
+        public LeadCountsWithAssignee GetLeadCountsWithAssignee()
+        {
+            LeadCountsWithAssignee counts = new LeadCountsWithAssignee();
+            string storedProcedure = "[SP_GetLeadCountsWithAssignee]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(storedProcedure, new
+                {
+
+                }, commandType: CommandType.StoredProcedure);
+                counts.LeadCounts = multi.Read<LeadCounts>().ToList();
+                counts.Response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return counts;
+        }
     }
 }

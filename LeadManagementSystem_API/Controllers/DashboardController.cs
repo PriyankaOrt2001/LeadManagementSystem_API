@@ -98,5 +98,45 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, now);
         }
+        [HttpGet]
+        [Route("api/v1/GetLeadDataByWeek")]
+        public HttpResponseMessage GetLeadDataByWeek(int WeekNumber)
+        {
+            LeadDataByWeek ldb = new LeadDataByWeek();
+            try
+            {
+                ldb = service.GetLeadDataByWeek(WeekNumber);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetLeadDataByWeek" },
+                    { "Controller", "DashboardController" }
+                };
+                rm.response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, ldb);
+        }
+        [HttpGet]
+        [Route("api/v1/GetLeadCountsWithAssignee")]
+        public HttpResponseMessage GetLeadCountsWithAssignee()
+        {
+            LeadCountsWithAssignee lcwa = new LeadCountsWithAssignee();
+            try
+            {
+                lcwa = service.GetLeadCountsWithAssignee();
+            }
+            catch(Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetLeadCountsWithAssignee" },
+                    { "Controller", "DashboardController" }
+                };
+                rm.response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, lcwa);
+        }
     }
 }
