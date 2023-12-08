@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LMS_DAL
 {
-    public class EmployeeRepository
+    public class AssigneeRepository
     {
         public AssignToModel GetAssignToList()
         {

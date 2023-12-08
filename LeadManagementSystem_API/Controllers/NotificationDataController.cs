@@ -29,7 +29,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "NotificationDetails" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "NotificationDataController" }
                 };
                 NotificationDetailsList.Response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -49,7 +49,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "RecentNotificationDetails" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "NotificationDataController" }
                 };
                 NotificationDetailsList.Response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -70,7 +70,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "UpdateNotificationSeenStatus" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "NotificationDataController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -90,7 +90,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetCountOfUnSeenNotification" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "NotificationDataController" }
                 };
                 rm.response = ExceptionHandler.ExceptionSave(values, ex);
             }

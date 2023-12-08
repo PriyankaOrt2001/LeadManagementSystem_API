@@ -35,7 +35,6 @@ namespace LeadManagementSystem_API.Controllers
             {
                 login.Password = eds.Encrypt(login.Password);
                 urmvm = ls.login(login);
-
             }
             return Request.CreateResponse(HttpStatusCode.OK, urmvm);
         }
@@ -57,7 +56,6 @@ namespace LeadManagementSystem_API.Controllers
             {
                 login.Password = eds.Encrypt(login.Password);
                 urmvm = ls.APILogIn(login);
-
             }
             return Request.CreateResponse(HttpStatusCode.OK, urmvm);
         }
@@ -82,7 +80,6 @@ namespace LeadManagementSystem_API.Controllers
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
-
         }
     }
 }

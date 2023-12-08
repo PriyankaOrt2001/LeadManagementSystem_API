@@ -68,9 +68,7 @@ namespace LeadManagementSystem_API.Controllers
             }
             catch (Exception ex)
             {
-
                 string str = ex.Message;
-
             }
         }
 
@@ -249,12 +247,12 @@ namespace LeadManagementSystem_API.Controllers
             try
             {
                 var userlist = service.GetUserList();
+                userlist.GetUserDetails.RemoveAll(user => user.UserID == ld.CreatedBy);
                 List<string> deviceTokens = userlist.GetUserDetails.Select(obj => obj.DeviceId).ToList();
                 var userdetails = service.GetUserDetails(ld.CreatedBy);
                 string deviceId = string.Empty;
                 string title = $"{userdetails.UserFullName} added New Lead.";
                 string body = "";
-
                 if (!ld.ScheduleDate.Contains('/')  && ld.ScheduleDate!="")
                 {
                     DateTime originalDate = DateTime.Parse(ld.ScheduleDate);
@@ -302,7 +300,6 @@ namespace LeadManagementSystem_API.Controllers
                         });
                     }
                 }
-
                 if (CardImages == null)
                 {
                     if (userlist == null)
@@ -516,7 +513,6 @@ namespace LeadManagementSystem_API.Controllers
                         });
                     }
                 }
-
                 if (CardImages == null)
                 {
                     response = service.UpdateLead(ld);
@@ -810,6 +806,5 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
-        
     }   
 }

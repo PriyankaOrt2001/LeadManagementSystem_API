@@ -29,7 +29,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "UpdateCategory" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "CategoryController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -49,7 +49,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetLeadCategoryList" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "CategoryController" }
                 };
                 lcm.Response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -69,7 +69,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "AddCategory" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "CategoryController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -89,7 +89,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "RemoveCategory" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "CategoryController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -110,7 +110,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "ViewCategoryDetails" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "CategoryController" }
                 };
                 rm.response = ExceptionHandler.ExceptionSave(values, ex);
             }

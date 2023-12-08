@@ -44,7 +44,7 @@
     <Compile Include="CategoryService.cs" />
     <Compile Include="CompanyService.cs" />
     <Compile Include="DashboardService.cs" />
-    <Compile Include="EmployeeService.cs" />
+    <Compile Include="AssigneeService.cs" />
     <Compile Include="ExceptionHandlerSevice.cs" />
     <Compile Include="LeadDataService.cs" />
     <Compile Include="LeadSourceService.cs" />

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace LMS_BAL
 {
-    public class EmployeeService
+    public class AssigneeService
     {
-        readonly EmployeeRepository repository = new EmployeeRepository();
+        readonly AssigneeRepository repository = new AssigneeRepository();
         public AssignToModel GetAssignToList()
         {
             return repository.GetAssignToList();

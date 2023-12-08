@@ -80,6 +80,18 @@ namespace LMS_Model
         {
             get; set;
         }
+        public string CountOfOpenLeads
+        {
+            get; set;
+        }
+        public string CountOfGhostLeads
+        {
+            get; set;
+        }
+        public string CountOfConvertedLeads
+        {
+            get; set;
+        }
     }
     public class LeadsCountModel
     {
@@ -185,7 +197,7 @@ namespace LMS_Model
     public class LeadDetailsByWeek
     {
         public string DateOfWeek { get; set; }
-        public int HoldLeadsCount { get; set; }
+        public int HotLeadsCount { get; set; }
         public int ColdLeadsCount { get; set; }
         public int WarmLeadsCount { get; set; }
     }
@@ -207,5 +219,25 @@ namespace LMS_Model
         public int ConvertedLeadsCount { get; set; }
         public int HoldLeadsCount { get; set; }
         public int OpenLeadsCount { get; set; }
+    }
+    public class CategoryPrice
+    {
+        public List<CategoryPriceList> CategoryPriceList
+        {
+            get; set;
+        }
+        public ResponseStatusModel Response { get; set; }
+    }
+    public class CategoryPriceList
+    {
+        public int HotLeadsAmount { get; set; }
+        public int ColdLeadsAmount { get; set; }
+        public int WarmLeadsAmount { get; set; }
+        public int GhostLeadsAmount { get; set; }
+    }
+    public class LeadsAmountByDate
+    {
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
     }
 }

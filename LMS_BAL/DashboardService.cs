@@ -39,5 +39,13 @@ namespace LMS_BAL
         {
             return repository.GetLeadCountsWithAssignee();
         }
+        public CategoryPriceList GetCategoryPriceByStatus(string StatusType)
+        {
+            return repository.GetCategoryPriceByStatus(StatusType);
+        }
+        public DashboardModel GetLeadsPriceByDates(LeadsAmountByDate amountByDate)
+        {
+            return repository.GetLeadsPriceByDates(amountByDate);
+        }
     }
 }

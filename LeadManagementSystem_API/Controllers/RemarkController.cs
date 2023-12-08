@@ -41,7 +41,6 @@ namespace LeadManagementSystem_API.Controllers
                 };
                 var serializer = new JavaScriptSerializer();
                 var json = serializer.Serialize(data);
-
                 Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 tRequest.Headers.Add(string.Format("Authorization: key={0}", SERVER_KEY_TOKEN));
                 tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
@@ -66,7 +65,6 @@ namespace LeadManagementSystem_API.Controllers
             {
 
                 string str = ex.Message;
-
             }
         }
 
@@ -84,7 +82,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetRemarkCount" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "RemarkController" }
                 };
                 rm.response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -104,7 +102,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "UpdateRemark" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "RemarkController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -118,6 +116,7 @@ namespace LeadManagementSystem_API.Controllers
             try
             {
                 var userlist = service.GetUserList();
+                userlist.GetUserDetails.RemoveAll(user => user.UserID == remarkModel.CreatedBy);
                 List<string> deviceTokens = userlist.GetUserDetails.Select(obj => obj.DeviceId).ToList();
                 var userdetails = service.GetUserDetails(remarkModel.CreatedBy);
                 var productname = service.ViewLead(remarkModel.Lead_Id);
@@ -132,7 +131,6 @@ namespace LeadManagementSystem_API.Controllers
                 string body = remarkModel.Remark;
 
                 DataTable myDataTable = new DataTable();
-
                 myDataTable.Columns.Add("RowID", typeof(int));
                 myDataTable.Columns.Add("NotificationSendTo", typeof(string));
                 myDataTable.Columns.Add("NotificationSendBy", typeof(string));
@@ -146,7 +144,6 @@ namespace LeadManagementSystem_API.Controllers
                     myDataTable.Rows.Add(i, value.UserID, remarkModel.CreatedBy, "Reminder", remarkModel.Remark, title);
                     i++;
                 }
-
                 if (userlist == null)
                 {
                     response = service.AddRemark(remarkModel, myDataTable);
@@ -162,7 +159,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "AddRemarkAndNotify" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "RemarkController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -176,6 +173,7 @@ namespace LeadManagementSystem_API.Controllers
             try
             {
                 var userlist = service.GetUserListToSendNotification(remarkModel.Lead_Id);
+                userlist.GetUserListToSendNotification.RemoveAll(user => user.UserId == remarkModel.CreatedBy);
                 List<string> deviceTokens = userlist.GetUserListToSendNotification.Select(obj => obj.DeviceId).ToList();
                 var userdetails = service.GetUserDetails(remarkModel.CreatedBy);
                 var productname = service.ViewLead(remarkModel.Lead_Id);
@@ -190,7 +188,6 @@ namespace LeadManagementSystem_API.Controllers
                 string body = remarkModel.Remark;
 
                 DataTable myDataTable = new DataTable();
-
                 myDataTable.Columns.Add("RowID", typeof(int));
                 myDataTable.Columns.Add("NotificationSendTo", typeof(string));
                 myDataTable.Columns.Add("NotificationSendBy", typeof(string));
@@ -220,7 +217,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "AddRemark" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "RemarkController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -241,7 +238,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetRemarksList" },
-                    { "Controller" , "LeadDataController" }
+                    { "Controller" , "RemarkController" }
                 };
                 rml.Response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -261,7 +258,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetRecentRemarksList" },
-                    { "Controller" , "LeadDataController" }
+                    { "Controller" , "RemarkController" }
                 };
                 rml.Response = ExceptionHandler.ExceptionSave(values, ex);
             }

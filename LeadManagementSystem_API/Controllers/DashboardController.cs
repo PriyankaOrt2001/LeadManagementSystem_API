@@ -138,5 +138,45 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, lcwa);
         }
+        [HttpGet]
+        [Route("api/v1/GetCategoryPriceByStatus")]
+        public HttpResponseMessage GetCategoryPriceByStatus(string StatusType)
+        {
+            CategoryPriceList cp = new CategoryPriceList();
+            try
+            {
+                cp = service.GetCategoryPriceByStatus(StatusType);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetCategoryPriceByStatus" },
+                    { "Controller", "DashboardController" }
+                };
+                rm.response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, cp);
+        }
+        [HttpPost]
+        [Route("api/v1/GetLeadsPriceByDates")]
+        public HttpResponseMessage GetLeadsPriceByDates(LeadsAmountByDate leadsAmountBy)
+        {
+            DashboardModel dm = new DashboardModel();
+            try
+            {
+                dm = service.GetLeadsPriceByDates(leadsAmountBy);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetLeadsPriceByDates" },
+                    { "Controller", "DashboardController" }
+                };
+                rm.response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, dm);
+        }
     }
 }

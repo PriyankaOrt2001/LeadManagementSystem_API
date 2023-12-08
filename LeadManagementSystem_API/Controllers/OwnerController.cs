@@ -29,7 +29,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetOwnerList" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "OwnerController" }
                 };
                 lsm.Response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -49,7 +49,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "AddNewLeadOwner" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "OwnerController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -70,7 +70,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "RemoveLeadOwner" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "OwnerController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -90,7 +90,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "ViewLeadOwner" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "OwnerController" }
                 };
                 rm.response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -111,7 +111,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "UpdateLeadOwner" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "OwnerController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -132,7 +132,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetLeadUpdatedByOwnerDetailsList" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "OwnerController" }
                 };
                 od.Response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -152,7 +152,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetLeadSourceList" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "OwnerController" }
                 };
                 lsm.Response = ExceptionHandler.ExceptionSave(values, ex);
             }

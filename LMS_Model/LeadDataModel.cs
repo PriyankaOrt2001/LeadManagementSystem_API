@@ -125,6 +125,7 @@ namespace LMS_Model
         {
             get; set;
         } = "";
+        public string RemarkStatus { get; set; }
     }
     public class CardImagesData
     {

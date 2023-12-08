@@ -11,9 +11,9 @@ using System.Web.Http;
 
 namespace LeadManagementSystem_API.Controllers
 {
-    public class EmployeeController : ApiController
+    public class AssigneeController : ApiController
     {
-        readonly EmployeeService service = new EmployeeService();
+        readonly AssigneeService service = new AssigneeService();
         ResponseMessageModel rm = new ResponseMessageModel();
         [HttpGet]
         [Route("api/v1/GetAssignToList")]
@@ -29,7 +29,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetAssignToList" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "AssigneeController" }
                 };
                 am.Response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -49,7 +49,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "AddNewAssignee" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "AssigneeController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -69,7 +69,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "RemoveAssignee" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "AssigneeController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -89,7 +89,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "ViewAssignToDetails" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "AssigneeController" }
                 };
                 rm.response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -109,7 +109,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "UpdateAssignee" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "AssigneeController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }

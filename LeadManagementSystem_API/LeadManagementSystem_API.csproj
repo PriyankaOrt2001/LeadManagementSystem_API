@@ -206,7 +206,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
-    <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\AssigneeController.cs" />
     <Compile Include="Controllers\LeadDataController.cs" />
     <Compile Include="Controllers\LeadSourceController.cs" />
     <Compile Include="Controllers\LogInController.cs" />

@@ -114,5 +114,35 @@ namespace LMS_DAL
             }
             return counts;
         }
+        public CategoryPriceList GetCategoryPriceByStatus(string StatusType)
+        {
+            CategoryPriceList cp = new CategoryPriceList();
+            string storedProcedure = "[SP_GetPriceOfCategoryByStatus]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(storedProcedure, new
+                {
+                    StatusType = StatusType
+                }, commandType: CommandType.StoredProcedure);
+                cp = multi.Read<CategoryPriceList>().SingleOrDefault();
+            }
+            return cp;
+        }
+        public DashboardModel GetLeadsPriceByDates(LeadsAmountByDate amountByDate)
+        {
+            DashboardModel dm = new DashboardModel();
+            string sql = "[SP_GetLeadsPriceByDates]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    FromDate=amountByDate.FromDate,
+                    ToDate=amountByDate.ToDate
+                }, commandType: CommandType.StoredProcedure);
+                dm = multi.Read<DashboardModel>().FirstOrDefault();
+                dm.Response = multi.Read<ResponseStatusModel>().FirstOrDefault();
+            }
+            return dm;
+        }
     }
 }

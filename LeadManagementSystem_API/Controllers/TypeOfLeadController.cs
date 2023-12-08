@@ -30,7 +30,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetTypeOfLeadList" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "TypeOfLeadController" }
                 };
                 tolm.Response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -50,7 +50,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "AddTypeOfLead" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "TypeOfLeadController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -70,7 +70,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "RemoveTypeOfLead" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "TypeOfLeadController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -90,7 +90,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "ViewTypeOfLeadDetails" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "TypeOfLeadController" }
                 };
                 rm.response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -111,7 +111,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "UpdateTypeOfLead" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "TypeOfLeadController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
             }
@@ -131,7 +131,7 @@ namespace LeadManagementSystem_API.Controllers
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetLeadTypesList" },
-                    { "Controller", "LeadDataController" }
+                    { "Controller", "TypeOfLeadController" }
                 };
                 lcm.Response = ExceptionHandler.ExceptionSave(values, ex);
             }

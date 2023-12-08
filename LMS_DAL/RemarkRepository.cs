@@ -57,7 +57,8 @@ namespace LMS_DAL
                     Remark = remarkModel.Remark,
                     Lead_Id = remarkModel.Lead_Id,
                     Status = remarkModel.Status,
-                    data = dataTable
+                    data = dataTable,
+                    RemarkStatus= remarkModel.RemarkStatus
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }

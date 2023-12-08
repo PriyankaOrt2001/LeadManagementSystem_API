@@ -49,7 +49,7 @@
     <Compile Include="CompanyRepository.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="DashboardRepository.cs" />
-    <Compile Include="EmployeeRepository.cs" />
+    <Compile Include="AssigneeRepository.cs" />
     <Compile Include="ExceptionHandlerRepository.cs" />
     <Compile Include="LeadDataRepository.cs" />
     <Compile Include="LeadSourceRepository.cs" />
