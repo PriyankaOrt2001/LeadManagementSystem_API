@@ -15,7 +15,11 @@ namespace LMS_BAL
         {
             return repository.GetAssignToList();
         }
-        public ResponseStatusModel AddNewAssignee(AssignToDetails ld)
+        public AssigneeModel GetAssigneeList()
+        {
+            return repository.GetAssigneeList();
+        }
+        public ResponseStatusModel AddNewAssignee(AssigneeDetails ld)
         {
             return repository.AddNewAssignee(ld);
         }
@@ -27,7 +31,7 @@ namespace LMS_BAL
         {
             return repository.ViewAssignToDetails(Assignee_Id);
         }
-        public ResponseStatusModel UpdateAssignee(AssignToDetails ad)
+        public ResponseStatusModel UpdateAssignee(AssigneeDetails ad)
         {
             return repository.UpdateAssignee(ad);
         }

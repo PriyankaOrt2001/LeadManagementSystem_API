@@ -127,7 +127,7 @@ namespace LeadManagementSystem_API.Controllers
                     ProductName = "";
                 }
                 else { ProductName = productname.ClientName; };
-                string title = $"New Remark added to {ProductName} by {userdetails.UserFullName}.";
+                string title = $"Remark added to {ProductName} by {userdetails.UserFullName}.";
                 string body = remarkModel.Remark;
 
                 DataTable myDataTable = new DataTable();
@@ -184,7 +184,7 @@ namespace LeadManagementSystem_API.Controllers
                     ProductName = "";
                 }
                 else { ProductName = productname.ClientName; };
-                string title = $"New Remark added to {ProductName} by {userdetails.UserFullName}.";
+                string title = $"Remark added to {ProductName} by {userdetails.UserFullName}.";
                 string body = remarkModel.Remark;
 
                 DataTable myDataTable = new DataTable();

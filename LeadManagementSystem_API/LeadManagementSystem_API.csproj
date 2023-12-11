@@ -225,6 +225,7 @@
     <Compile Include="Security\TokenAuth.cs" />
     <Compile Include="Services\EncryptDecryptService.cs" />
     <Compile Include="Services\ExceptionHandler.cs" />
+    <Compile Include="Services\LoggerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

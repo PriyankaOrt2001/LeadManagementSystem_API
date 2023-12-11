@@ -26,7 +26,21 @@ namespace LMS_DAL
             }
             return am;
         }
-        public ResponseStatusModel AddNewAssignee(AssignToDetails ld)
+        public AssigneeModel GetAssigneeList()
+        {
+            AssigneeModel am = new AssigneeModel();
+            string sql = "[SP_AssigneeDropdown]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+
+                }, commandType: CommandType.StoredProcedure);
+                am.AssigneeList = multi.Read<AssigneeDetails>().ToList();
+            }
+            return am;
+        }
+        public ResponseStatusModel AddNewAssignee(AssigneeDetails ld)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             string sql = "[SP_AddNewAssignee]";
@@ -70,7 +84,7 @@ namespace LMS_DAL
             }
             return lm;
         }
-        public ResponseStatusModel UpdateAssignee(AssignToDetails ld)
+        public ResponseStatusModel UpdateAssignee(AssigneeDetails ld)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             string sql = "[SP_UpdateAssignee]";

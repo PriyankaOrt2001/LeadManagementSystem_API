@@ -2,6 +2,7 @@
 using LeadManagementSystem_API.Services;
 using LMS_BAL;
 using LMS_Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +13,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
@@ -246,6 +248,8 @@ namespace LeadManagementSystem_API.Controllers
             ResponseStatusModel response = new ResponseStatusModel();
             try
             {
+                string AddLeadModel = JsonConvert.SerializeObject(ld);
+                Logger.LogEntryToFile(AddLeadModel);
                 var userlist = service.GetUserList();
                 userlist.GetUserDetails.RemoveAll(user => user.UserID == ld.CreatedBy);
                 List<string> deviceTokens = userlist.GetUserDetails.Select(obj => obj.DeviceId).ToList();
@@ -253,11 +257,6 @@ namespace LeadManagementSystem_API.Controllers
                 string deviceId = string.Empty;
                 string title = $"{userdetails.UserFullName} added New Lead.";
                 string body = "";
-                if (!ld.ScheduleDate.Contains('/')  && ld.ScheduleDate!="")
-                {
-                    DateTime originalDate = DateTime.Parse(ld.ScheduleDate);
-                    ld.ScheduleDate = originalDate.ToString("MM/dd/yyyy");
-                }
                 DataTable myDataTable = new DataTable();
 
                 myDataTable.Columns.Add("RowID", typeof(int));
@@ -482,11 +481,6 @@ namespace LeadManagementSystem_API.Controllers
             {
                 CardImagesData cid = new CardImagesData();
                 cid = service.GetImageList(ld.LeadId);
-                if (!ld.ScheduleDate.Contains('/') && ld.ScheduleDate != "")
-                {
-                    DateTime originalDate = DateTime.Parse(ld.ScheduleDate);
-                    ld.ScheduleDate = originalDate.ToString("MM/dd/yyyy");
-                }
                 List<CardImages> CardImages = new List<CardImages>();
                 for (int i = 0; i < 2; i++)
                 {

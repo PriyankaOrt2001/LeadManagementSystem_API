@@ -35,9 +35,29 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, am);
         }
+        [HttpGet]
+        [Route("api/v1/GetAssigneeList")]
+        public HttpResponseMessage GetAssigneeList()
+        {
+            AssigneeModel am = new AssigneeModel();
+            try
+            {
+                am = service.GetAssigneeList();
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetAssigneeList" },
+                    { "Controller", "AssigneeController" }
+                };
+                am.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, am);
+        }
         [HttpPost]
         [Route("api/v1/AddNewAssignee")]
-        public HttpResponseMessage AddNewAssignee(AssignToDetails lcd)
+        public HttpResponseMessage AddNewAssignee(AssigneeDetails lcd)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             try
@@ -97,7 +117,7 @@ namespace LeadManagementSystem_API.Controllers
         }
         [HttpPost]
         [Route("api/v1/UpdateAssignee")]
-        public HttpResponseMessage UpdateAssignee(AssignToDetails atd)
+        public HttpResponseMessage UpdateAssignee(AssigneeDetails atd)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             try
