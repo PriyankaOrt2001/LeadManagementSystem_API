@@ -239,5 +239,6 @@ namespace LMS_Model
     {
         public string FromDate { get; set; }
         public string ToDate { get; set; }
+        public string StatusType { get; set; }
     }
 }

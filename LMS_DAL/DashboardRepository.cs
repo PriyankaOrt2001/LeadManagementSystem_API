@@ -114,7 +114,7 @@ namespace LMS_DAL
             }
             return counts;
         }
-        public CategoryPriceList GetCategoryPriceByStatus(string StatusType)
+        public CategoryPriceList GetCategoryPriceByStatus(LeadsAmountByDate amountByDate)
         {
             CategoryPriceList cp = new CategoryPriceList();
             string storedProcedure = "[SP_GetPriceOfCategoryByStatus]";
@@ -122,7 +122,9 @@ namespace LMS_DAL
             {
                 var multi = conn.QueryMultiple(storedProcedure, new
                 {
-                    StatusType = StatusType
+                    FromDate = amountByDate.FromDate,
+                    ToDate = amountByDate.ToDate,
+                    StatusType = amountByDate.StatusType
                 }, commandType: CommandType.StoredProcedure);
                 cp = multi.Read<CategoryPriceList>().SingleOrDefault();
             }

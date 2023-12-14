@@ -138,14 +138,14 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, lcwa);
         }
-        [HttpGet]
+        [HttpPost]
         [Route("api/v1/GetCategoryPriceByStatus")]
-        public HttpResponseMessage GetCategoryPriceByStatus(string StatusType)
+        public HttpResponseMessage GetCategoryPriceByStatus(LeadsAmountByDate amountByDate)
         {
             CategoryPriceList cp = new CategoryPriceList();
             try
             {
-                cp = service.GetCategoryPriceByStatus(StatusType);
+                cp = service.GetCategoryPriceByStatus(amountByDate);
             }
             catch (Exception ex)
             {
