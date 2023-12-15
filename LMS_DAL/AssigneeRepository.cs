@@ -69,9 +69,9 @@ namespace LMS_DAL
             }
             return response;
         }
-        public AssignToDetails ViewAssignToDetails(int Assignee_Id)
+        public AssigneeDetails ViewAssignToDetails(int Assignee_Id)
         {
-            AssignToDetails lm = new AssignToDetails();
+            AssigneeDetails lm = new AssigneeDetails();
             string sql = "[SP_ViewAssignToDetails]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
@@ -80,7 +80,7 @@ namespace LMS_DAL
                     Assignee_Id = Assignee_Id
                 },
                 commandType: CommandType.StoredProcedure);
-                lm = multi.Read<AssignToDetails>().SingleOrDefault();
+                lm = multi.Read<AssigneeDetails>().SingleOrDefault();
             }
             return lm;
         }

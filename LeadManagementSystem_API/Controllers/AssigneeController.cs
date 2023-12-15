@@ -99,7 +99,7 @@ namespace LeadManagementSystem_API.Controllers
         [Route("api/v1/ViewAssignToDetails")]
         public HttpResponseMessage ViewAssignToDetails(int Assignee_Id)
         {
-            AssignToDetails ld = new AssignToDetails();
+            AssigneeDetails ld = new AssigneeDetails();
             try
             {
                 ld = service.ViewAssignToDetails(Assignee_Id);

@@ -27,7 +27,7 @@ namespace LMS_BAL
         {
             return repository.RemoveAssignee(Assignee_Id);
         }
-        public AssignToDetails ViewAssignToDetails(int Assignee_Id)
+        public AssigneeDetails ViewAssignToDetails(int Assignee_Id)
         {
             return repository.ViewAssignToDetails(Assignee_Id);
         }
