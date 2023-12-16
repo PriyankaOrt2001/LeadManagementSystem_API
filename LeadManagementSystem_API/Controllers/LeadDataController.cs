@@ -672,6 +672,36 @@ namespace LeadManagementSystem_API.Controllers
         }
 
         [HttpPost]
+        [Route("api/v1/ChangeLeadPriority")]
+        public HttpResponseMessage ChangeLeadPriority(ChangeLeadPriority cls)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            try
+            {
+                response = service.ChangeLeadPriority(cls);
+                if (cls.LeadId == null)
+                {
+                    response.LeadId = "";
+                }
+                else
+                {
+                    response.LeadId = cls.LeadId;
+                }
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "ChangeLeadPriority" },
+                    { "Controller", "LeadDataController" }
+                };
+                response.LeadId = "";
+                response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        [HttpPost]
         [Route("api/v1/AddToFav")]
         public HttpResponseMessage AddToFav(LeadDetails ld)
         {

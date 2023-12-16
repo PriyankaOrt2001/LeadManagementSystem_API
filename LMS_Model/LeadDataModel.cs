@@ -212,4 +212,10 @@ namespace LMS_Model
         public List<int> AssigneeId { get; set; }
         public string SearchValue { get; set; }
     }
+    public class ChangeLeadPriority
+    {
+        public string LeadId { get; set; }
+        public string UpdatedBy { get; set; }
+        public string Priority { get; set; }
+    }
 }

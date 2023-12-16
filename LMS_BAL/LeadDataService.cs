@@ -101,6 +101,10 @@ namespace LMS_BAL
         {
             return repository.ChangeLeadStatus(ld);
         }
+        public ResponseStatusModel ChangeLeadPriority(ChangeLeadPriority ld)
+        {
+            return repository.ChangeLeadPriority(ld);
+        }
         public ResponseStatusModel RemoveLead(string LeadId,string UserId)
         {
             return repository.RemoveLead(LeadId, UserId);

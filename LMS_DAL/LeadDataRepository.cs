@@ -461,6 +461,22 @@ namespace LMS_DAL
             }
             return response;
         }
+        public ResponseStatusModel ChangeLeadPriority(ChangeLeadPriority clp)
+        {
+            ResponseStatusModel response = new ResponseStatusModel();
+            string sql = "[SP_ChangeLeadPriority]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    Lead_Id = clp.LeadId,
+                    UpdatedBy = clp.UpdatedBy,
+                    Priority = clp.Priority
+                }, commandType: CommandType.StoredProcedure);
+                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
+            }
+            return response;
+        }
         public ResponseStatusModel AddToFav(LeadDetails ld)
         {
             ResponseStatusModel response = new ResponseStatusModel();
