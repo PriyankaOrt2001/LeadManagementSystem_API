@@ -11,29 +11,33 @@ namespace LMS_BAL
     public class TypeOfLeadService
     {
         readonly TypeOfLeadRepository repository = new TypeOfLeadRepository();
+        public SubCategoryModel GetSubCategoryList(int Category_Id)
+        {
+            return repository.GetSubCategoryList(Category_Id);
+        }
         public TypeOfLeadModel GetTypeOfLeadList(int Category_Id)
         {
             return repository.GetTypeOfLeadList(Category_Id);
         }
-        public ResponseStatusModel AddTypeOfLead(TypeOfLeadDetails tol)
+        public ResponseStatusModel AddSubCategory(SubCategoryDetails tol)
         {
-            return repository.AddTypeOfLead(tol);
+            return repository.AddSubCategory(tol);
         }
-        public ResponseStatusModel RemoveTypeOfLead(int TypeOfLeadId)
+        public ResponseStatusModel RemoveSubCategory(int SubCategoryId)
         {
-            return repository.RemoveTypeOfLead(TypeOfLeadId);
+            return repository.RemoveSubCategory(SubCategoryId);
         }
-        public TypeOfLeadDetails ViewTypeOfLeadDetails(int TypeOfLead_ID)
+        public SubCategoryDetails ViewSubCategoryDetails(int SubCategory_ID)
         {
-            return repository.ViewTypeOfLeadDetails(TypeOfLead_ID);
+            return repository.ViewSubCategoryDetails(SubCategory_ID);
         }
-        public ResponseStatusModel UpdateTypeOfLead(TypeOfLeadDetails ld)
+        public ResponseStatusModel UpdateSubCategory(SubCategoryDetails ld)
         {
-            return repository.UpdateTypeOfLead(ld);
+            return repository.UpdateSubCategory(ld);
         }
-        public TypeOfLeadModel GetLeadTypesList()
+        public SubCategoryModel GetSubCategoryList()
         {
-            return repository.GetLeadTypesList();
+            return repository.GetSubCategoryList();
         }
     }
 }

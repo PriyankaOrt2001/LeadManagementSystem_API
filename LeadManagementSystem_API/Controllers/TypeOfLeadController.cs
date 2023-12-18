@@ -36,20 +36,41 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, tolm);
         }
+
+        [HttpGet]
+        [Route("api/v1/GetSubCategoryList")]
+        public HttpResponseMessage GetSubCategoryList(int Category_Id)
+        {
+            SubCategoryModel tolm = new SubCategoryModel();
+            try
+            {
+                tolm = service.GetSubCategoryList(Category_Id);
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetSubCategoryList" },
+                    { "Controller", "TypeOfLeadController" }
+                };
+                tolm.Response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, tolm);
+        }
         [HttpPost]
-        [Route("api/v1/AddTypeOfLead")]
-        public HttpResponseMessage AddTypeOfLead(TypeOfLeadDetails tol)
+        [Route("api/v1/AddSubCategory")]
+        public HttpResponseMessage AddSubCategory(SubCategoryDetails tol)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             try
             {
-                response = service.AddTypeOfLead(tol);
+                response = service.AddSubCategory(tol);
             }
             catch (Exception ex)
             {
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
-                    { "Action", "AddTypeOfLead" },
+                    { "Action", "AddSubCategory" },
                     { "Controller", "TypeOfLeadController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
@@ -57,19 +78,19 @@ namespace LeadManagementSystem_API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
         [HttpGet]
-        [Route("api/v1/RemoveTypeOfLead")]
-        public HttpResponseMessage RemoveTypeOfLead(int id)
+        [Route("api/v1/RemoveSubCategory")]
+        public HttpResponseMessage RemoveSubCategory(int id)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             try
             {
-                response = service.RemoveTypeOfLead(id);
+                response = service.RemoveSubCategory(id);
             }
             catch (Exception ex)
             {
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
-                    { "Action", "RemoveTypeOfLead" },
+                    { "Action", "RemoveSubCategory" },
                     { "Controller", "TypeOfLeadController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
@@ -77,19 +98,19 @@ namespace LeadManagementSystem_API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
         [HttpGet]
-        [Route("api/v1/ViewTypeOfLeadDetails")]
-        public HttpResponseMessage ViewTypeOfLeadDetails(int TypeOfLead_ID)
+        [Route("api/v1/ViewSubCategoryDetails")]
+        public HttpResponseMessage ViewSubCategoryDetails(int SubCategory_ID)
         {
-            TypeOfLeadDetails ld = new TypeOfLeadDetails();
+            SubCategoryDetails ld = new SubCategoryDetails();
             try
             {
-                ld = service.ViewTypeOfLeadDetails(TypeOfLead_ID);
+                ld = service.ViewSubCategoryDetails(SubCategory_ID);
             }
             catch (Exception ex)
             {
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
-                    { "Action", "ViewTypeOfLeadDetails" },
+                    { "Action", "ViewSubCategoryDetails" },
                     { "Controller", "TypeOfLeadController" }
                 };
                 rm.response = ExceptionHandler.ExceptionSave(values, ex);
@@ -98,19 +119,19 @@ namespace LeadManagementSystem_API.Controllers
         }
 
         [HttpPost]
-        [Route("api/v1/UpdateTypeOfLead")]
-        public HttpResponseMessage UpdateTypeOfLead(TypeOfLeadDetails ld)
+        [Route("api/v1/UpdateSubCategory")]
+        public HttpResponseMessage UpdateSubCategory(SubCategoryDetails ld)
         {
             ResponseStatusModel response = new ResponseStatusModel();
             try
             {
-                response = service.UpdateTypeOfLead(ld);
+                response = service.UpdateSubCategory(ld);
             }
             catch (Exception ex)
             {
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
-                    { "Action", "UpdateTypeOfLead" },
+                    { "Action", "UpdateSubCategory" },
                     { "Controller", "TypeOfLeadController" }
                 };
                 response = ExceptionHandler.ExceptionSave(values, ex);
@@ -118,20 +139,20 @@ namespace LeadManagementSystem_API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
         [HttpGet]
-        [Route("api/v1/GetLeadTypesList")]
-        public HttpResponseMessage GetLeadTypesList()
+        [Route("api/v1/GetSubCategoryList")]
+        public HttpResponseMessage GetSubCategoryList()
         {
-            TypeOfLeadModel lcm = new TypeOfLeadModel();
+            SubCategoryModel lcm = new SubCategoryModel();
             try
             {
-                lcm = service.GetLeadTypesList();
+                lcm = service.GetSubCategoryList();
             }
             catch (Exception ex)
             {
                 Dictionary<string, object> values = new Dictionary<string, object>()
                 {
                     { "Action", "GetLeadTypesList" },
-                    { "Controller", "TypeOfLeadController" }
+                    { "Controller", "SubCategoryController" }
                 };
                 lcm.Response = ExceptionHandler.ExceptionSave(values, ex);
             }

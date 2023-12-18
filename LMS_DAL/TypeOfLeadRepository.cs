@@ -27,79 +27,94 @@ namespace LMS_DAL
             }
             return tolm;
         }
-        public ResponseStatusModel AddTypeOfLead(TypeOfLeadDetails ld)
+        public SubCategoryModel GetSubCategoryList(int Category_Id)
+        {
+            SubCategoryModel tolm = new SubCategoryModel();
+            string sql = "[SP_SubCategoryDropdown]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(sql, new
+                {
+                    Category_Id = Category_Id
+                },
+                commandType: CommandType.StoredProcedure);
+                tolm.SubCategoryList = multi.Read<SubCategoryDetails>().ToList();
+            }
+            return tolm;
+        }
+        public ResponseStatusModel AddSubCategory(SubCategoryDetails ld)
         {
             ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_AddNewTypeOfLead]";
+            string sql = "[SP_AddNewSubCategory]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
                     CreatedBy = ld.CreatedBy,
                     Category_Id = ld.Category_Id,
-                    TypeOfLead = ld.TypeOfLead
+                    SubCategory = ld.SubCategory
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
             return response;
         }
-        public ResponseStatusModel RemoveTypeOfLead(int TypeOfLeadId)
+        public ResponseStatusModel RemoveSubCategory(int SubCategoryId)
         {
             ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_RemoveTypeOfLead]";
+            string sql = "[SP_RemoveSubCategory]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
-                    TypeOfLead_ID = TypeOfLeadId
+                    SubCategory_ID = SubCategoryId
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
             return response;
         }
-        public TypeOfLeadDetails ViewTypeOfLeadDetails(int TypeOfLead_ID)
+        public SubCategoryDetails ViewSubCategoryDetails(int SubCategory_ID)
         {
-            TypeOfLeadDetails lm = new TypeOfLeadDetails();
-            string sql = "[SP_ViewTypeOfLeadDetails]";
+            SubCategoryDetails lm = new SubCategoryDetails();
+            string sql = "[SP_ViewSubCategoryDetails]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
-                    TypeOfLead_ID = TypeOfLead_ID
+                    SubCategory_ID = SubCategory_ID
                 },
                 commandType: CommandType.StoredProcedure);
-                lm = multi.Read<TypeOfLeadDetails>().SingleOrDefault();
+                lm = multi.Read<SubCategoryDetails>().SingleOrDefault();
             }
             return lm;
         }
-        public ResponseStatusModel UpdateTypeOfLead(TypeOfLeadDetails ld)
+        public ResponseStatusModel UpdateSubCategory(SubCategoryDetails ld)
         {
             ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateTypeOfLead]";
+            string sql = "[SP_UpdateSubCategory]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
                     Category_Id = ld.Category_Id,
                     CreatedBy = ld.CreatedBy,
-                    TypeOfLead_ID = ld.TypeOfLead_ID,
-                    TypeOfLead = ld.TypeOfLead
+                    SubCategory_ID = ld.SubCategory_ID,
+                    SubCategory = ld.SubCategory
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
             return response;
         }
-        public TypeOfLeadModel GetLeadTypesList()
+        public SubCategoryModel GetSubCategoryList()
         {
-            TypeOfLeadModel lcm = new TypeOfLeadModel();
-            string sql = "[SP_GetTypeOfLeadList]";
+            SubCategoryModel lcm = new SubCategoryModel();
+            string sql = "[SP_GetSubCategoryList]";
             using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
 
                 }, commandType: CommandType.StoredProcedure);
-                lcm.TypeOfLeadList = multi.Read<TypeOfLeadDetails>().ToList();
+                lcm.SubCategoryList = multi.Read<SubCategoryDetails>().ToList();
             }
             return lcm;
         }
