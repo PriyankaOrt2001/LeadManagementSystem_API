@@ -197,13 +197,15 @@ namespace LeadManagementSystem_API.Controllers
                 filterBy.CompanyId?.Split(',').Select(s => s.Trim('\'')).ToList(),
                 filterBy.CategoryId?.Split(',').Select(s => s.Trim('\'')).ToList(),
                 filterBy.AssignedId?.Split(',').Select(s => s.Trim('\'')).ToList(),
-                filterBy.Priority?.Split(',').Select(s => s.Trim('\'')).ToList()
+                filterBy.Priority?.Split(',').Select(s => s.Trim('\'')).ToList(),
+                filterBy.Status?.Split(',').Select(s => s.Trim('\'')).ToList()
                 };
                 var filters = new List<Func<LeadDetails, bool>> {
                 data => filterLists[0]?.Contains(data.CompanyId) ?? true,
                 data => filterLists[1]?.Contains(data.ProjectTypeId) ?? true,
                 data => filterLists[2]?.Contains(data.AssignToId) ?? true,
-                data => filterLists[3]?.Contains(data.Category) ?? true
+                data => filterLists[3]?.Contains(data.Category) ?? true,
+                data => filterLists[4]?.Contains(data.StatusType) ?? true
                 };
                 lm.LeadList = filters.Aggregate(lm.LeadList, (current, filter) => current.Where(filter).ToList());
 

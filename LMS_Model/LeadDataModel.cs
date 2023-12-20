@@ -194,6 +194,7 @@ namespace LMS_Model
         public string Priority { get; set; } = "";
         public string CategoryId { get; set; } = "";
         public string AssignedId { get; set; } = "";
+        public string Status { get; set; } = "";
     }
     public class PagingParam
     {
