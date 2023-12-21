@@ -24,7 +24,7 @@ namespace LMS_DAL
                 },
                 commandType: CommandType.StoredProcedure);
                 tolm.TypeOfLeadList = multi.Read<TypeOfLeadDetails>().ToList();
-            }
+            }  
             return tolm;
         }
         public SubCategoryModel GetSubCategoryList(int Category_Id)

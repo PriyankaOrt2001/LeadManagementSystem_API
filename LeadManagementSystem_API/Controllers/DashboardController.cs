@@ -158,6 +158,26 @@ namespace LeadManagementSystem_API.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, cp);
         }
+        [HttpGet]
+        [Route("api/v1/GetPriorityPrice")]
+        public HttpResponseMessage GetPriorityPrice()
+        {
+            PriorityPriceList cp = new PriorityPriceList();
+            try
+            {
+                cp = service.GetPriorityPrice();
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>()
+                {
+                    { "Action", "GetPriorityPrice" },
+                    { "Controller", "DashboardController" }
+                };
+                rm.response = ExceptionHandler.ExceptionSave(values, ex);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, cp);
+        }
         [HttpPost]
         [Route("api/v1/GetLeadsPriceByDates")]
         public HttpResponseMessage GetLeadsPriceByDates(LeadsAmountByDate leadsAmountBy)

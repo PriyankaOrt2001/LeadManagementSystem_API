@@ -43,6 +43,10 @@ namespace LMS_BAL
         {
             return repository.GetCategoryPriceByStatus(amountByDate);
         }
+        public PriorityPriceList GetPriorityPrice()
+        {
+            return repository.GetPriorityPrice();
+        }
         public DashboardModel GetLeadsPriceByDates(LeadsAmountByDate amountByDate)
         {
             return repository.GetLeadsPriceByDates(amountByDate);

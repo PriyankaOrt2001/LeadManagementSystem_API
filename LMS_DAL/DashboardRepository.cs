@@ -130,6 +130,19 @@ namespace LMS_DAL
             }
             return cp;
         }
+        public PriorityPriceList GetPriorityPrice()
+        {
+            PriorityPriceList cp = new PriorityPriceList();
+            string storedProcedure = "[SP_GetPriorityPrice]";
+            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
+            {
+                var multi = conn.QueryMultiple(storedProcedure, new
+                {
+                }, commandType: CommandType.StoredProcedure);
+                cp = multi.Read<PriorityPriceList>().SingleOrDefault();
+            }
+            return cp;
+        }
         public DashboardModel GetLeadsPriceByDates(LeadsAmountByDate amountByDate)
         {
             DashboardModel dm = new DashboardModel();

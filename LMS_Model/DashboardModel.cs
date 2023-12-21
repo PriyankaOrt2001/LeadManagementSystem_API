@@ -235,6 +235,13 @@ namespace LMS_Model
         public int WarmLeadsAmount { get; set; }
         public int GhostLeadsAmount { get; set; }
     }
+    public class PriorityPriceList
+    {
+        public int HotLeadsAmount { get; set; }
+        public int ColdLeadsAmount { get; set; }
+        public int WarmLeadsAmount { get; set; }
+        public int GhostLeadsAmount { get; set; }
+    }
     public class LeadsAmountByDate
     {
         public string FromDate { get; set; }
