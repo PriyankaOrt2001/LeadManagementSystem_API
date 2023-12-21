@@ -241,6 +241,9 @@ namespace LMS_Model
         public int ColdLeadsAmount { get; set; }
         public int WarmLeadsAmount { get; set; }
         public int GhostLeadsAmount { get; set; }
+        public decimal HotLeadsInPercentage { get; set; }
+        public decimal ColdLeadsInPercentage { get; set; }
+        public decimal WarmLeadsInPercentage { get; set; }
     }
     public class LeadsAmountByDate
     {
