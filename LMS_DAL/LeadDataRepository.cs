@@ -189,10 +189,10 @@ namespace LMS_DAL
                     CreatedBy = ld.CreatedBy,
                     CompanyName = ld.CompanyName,
                     ClientName = ld.ClientName,
-                    Category = ld.Category,
-                    TypeOfLead = ld.TypeOfLead,
+                    Category = ld.Category, //pass Priority value from front
+                    TypeOfLead = ld.TypeOfLead, //pass Sub Category value from front
                     ProductName = ld.ProductName,
-                    Source = ld.Source,
+                    Source = ld.Source, // pass Owner Name value
                     Reference = ld.Reference,
                     LeadSource = ld.LeadSource,
                     SpokesName = ld.SpokesName,
@@ -210,7 +210,7 @@ namespace LMS_DAL
                     ScheduleDate = ld.ScheduleDate,
                     ScheduleTime = ld.ScheduleTime,
                     FrontImgOfCardPath = ld.FrontImgOfCardPath,
-                    ProjectType = ld.ProjectType,
+                    ProjectType = ld.ProjectType, //pass Category value from front
                     FrontImgFileName = ld.FrontImgFileName,
                     FrontImgBase64 = ld.FrontImgBase64,
                     FrontImgFileType = ld.FrontImgFileType,
