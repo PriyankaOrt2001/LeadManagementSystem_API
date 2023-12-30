@@ -19,17 +19,6 @@ namespace LMS_BAL
         {
             return repository.AddNewUser(um);
         }
-        public ResponseStatusModel UpdateUser(UserModel um)
-        {
-            return repository.UpdateUser(um);
-        }
-        public ResponseStatusModel RemoveUser(int UserID)
-        {
-            return repository.RemoveUser(UserID);
-        }
-        public UserModel ViewUser(int UserID)
-        {
-            return repository.ViewUser(UserID);
-        }
+        
     }
 }

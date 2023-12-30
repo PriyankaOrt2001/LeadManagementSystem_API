@@ -34,64 +34,14 @@ namespace LMS_DAL
             {
                 var multi = conn.QueryMultiple(sql, new
                 {
-                    Created_By=um.CreatedBy,
+                    UserFullName = um.UserFullName,
                     UserName = um.UserName,
-                    Email=um.Email,
                     Password=um.Password,
-                    PhoneNo=um.Phone_No,
-                    Role_Id=um.Role_Id
                 }, commandType: CommandType.StoredProcedure);
                 response = multi.Read<ResponseStatusModel>().SingleOrDefault();
             }
             return response;
         }
-        public ResponseStatusModel UpdateUser(UserModel um)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_UpdateUser]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    UserID = um.UserID,
-                    UserName = um.UserName,
-                    Email=um.Email,
-                    Phone_No=um.Phone_No,
-                    Password=um.Password,
-                    Role_Id=um.Role_Id
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public ResponseStatusModel RemoveUser(int UserID)
-        {
-            ResponseStatusModel response = new ResponseStatusModel();
-            string sql = "[SP_RemoveUser]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    UserID = UserID
-                }, commandType: CommandType.StoredProcedure);
-                response = multi.Read<ResponseStatusModel>().SingleOrDefault();
-            }
-            return response;
-        }
-        public UserModel ViewUser(int UserID)
-        {
-            UserModel um = new UserModel();
-            string sql = "[SP_ViewUser]";
-            using (IDbConnection conn = new SqlConnection(Connection.GetConnection().ConnectionString))
-            {
-                var multi = conn.QueryMultiple(sql, new
-                {
-                    UserID = UserID
-                },
-                commandType: CommandType.StoredProcedure);
-                um = multi.Read<UserModel>().SingleOrDefault();
-            }
-            return um;
-        }
+       
     }
 }
